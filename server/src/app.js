@@ -38,7 +38,9 @@ const app = express();
 
 app.use("/api",routes);
 
-app.listen(8080, ()=> {
+const port=process.env.APP_PORT || 8080
+
+app.listen(port, ()=> {
     console.log("Application listening on port 8080")
 })
 
