@@ -4,9 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-User=nanodano
+User=root
 WorkingDirectory=/home/pi
-ExecStart=APP_PORT=8080 INTERVAL=120000 node ./Projects/temperature-sensor/server/src/app.js
+EnvironmentFile=/home/pi/Projects/temperature-sensor/environment
+ExecStart=/usr/bin/node /home/pi/Projects/temperature-sensor/server/src/app.js
 Restart=on-failure
 # Other restart options: always, on-abort, etc
 
