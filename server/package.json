@@ -9,7 +9,8 @@
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "dhtxx": "file:../modules/dhtxx"
+    "axios": "^0.20.0",
+    "dhtxx": "file:../modules/dhtxx",
+    "express": "^4.17.1"
   }
 }

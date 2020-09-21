@@ -6,19 +6,28 @@ class Reader{
     
     async readValues() {
         const readings = await this.takeReadings();
-        this.reportReadings(readings)
+        return this.reportReadings(readings)
     }
     
-    reportReadings(readings) {
+    
+    async reportReadings(readings) {
         let values = readings
         if(!Array.isArray(readings)) {
             values=[readings]
         }
-        this.reporters.forEach(reporter=>{
-            values.forEach(reading=>{
-                reporter.reportReading(reading)
-            })
-        })
+        const reportReadingForReporter = (reporter,reading) =>async () => {
+            try {
+                return await reporter.reportReading(reading)
+            }catch(err) {
+                console.log(`Reporter ${reporter.name} failed`,err)
+            }
+        }
+        
+        for(let reporter of this.reporters) {
+            const promises = readings.map(reading=>reportReadingForReporter(reporter,reading)())
+            await Promise.all(promises)
+        }
+       
     }
 }
 
