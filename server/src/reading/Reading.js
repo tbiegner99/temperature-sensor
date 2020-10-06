@@ -1,20 +1,21 @@
 class Reading {
-    constructor(name,value, unit) {
-        this._name=name;
-        this._value=value;
-        this._unit = unit || ''
-    }
-    get name() {
-        return this._name
-    }
+  constructor(name, value, unit) {
+    this._name = name;
+    this._value = value;
+    this._unit = unit || '';
+  }
 
-    get value() {
-        return this._value
-    }
+  get name() {
+    return this._name;
+  }
 
-    get unit() {
-        return this._unit;
-    }
+  get value() {
+    return this._value;
+  }
+
+  get unit() {
+    return this._unit;
+  }
 }
 
-module.exports= Reading;
+module.exports = Reading;

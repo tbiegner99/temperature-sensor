@@ -1,51 +1,51 @@
-const Sensor = require("dhtxx")
-const {GpioPins,Timing} = require("./config/constants")
-const {Temperature} = require("./config/units")
-const IntervalReader = require("./reader/IntervalReader");
-const TemperatureHumidityReader = require("./reader/TemperatureHumidityReader")
-const CurrentStatusReporter = require("./reporter/CurrentStatusReporter")
-const LoggerReporter = require("./reporter/LoggerReporter")
-const DatabaseReporter = require("./reporter/DatabaseReporter")
-const TemperatureFormatter=require("./reporter/formatter/TemperatureFormatter")
-const HumidityFormatter=require("./reporter/formatter/HumidityFormatter");
-const CurrentConditionsManager= require("./service/CurrentConditionsManager")
-const routes = require("./routes")
-const express = require("express");
-const httpClient = require("axios")
+const Sensor = require('dhtxx');
+const express = require('express');
 
+const Getopt = require('node-getopt');
+const IntervalReader = require('./reader/IntervalReader');
+const TemperatureHumidityReader = require('./reader/TemperatureHumidityReader');
+const routes = require('./routes');
+const ConfigProcessor = require('./ConfigProcessor');
 
-const formatters= [
-    new TemperatureFormatter(Temperature.CELCIUS),
-    new HumidityFormatter()
-]
+// Getopt arguments options
+//   '=':   has argument
+//   '[=]': has argument but optional
+//   '+':   multiple option supported
+const getopt = new Getopt([
+  ['c', 'config=', 'location of the configuration file'],
+  ['h', 'help'],
+]).bindHelp();
 
-const reporters = [
-    new LoggerReporter(formatters),
-    new CurrentStatusReporter(CurrentConditionsManager),
-    new DatabaseReporter(httpClient)
-]
+const { options } = getopt.parse(process.argv.slice(2));
 
-const readerInterval=process.env.INTERVAL || Timing.ONE_MIN;
-const gpio = process.env.GPIO_PIN || GpioPins.GPIO4;
+if (!options.config) {
+  console.error('Config file is required. Pass --config');
+  process.exit(1);
+}
+const configProcessor = new ConfigProcessor(options.config);
 
-const reader = new IntervalReader(reporters, readerInterval,  new TemperatureHumidityReader(gpio));
+const {
+  reporters,
+  contextRoot,
+  gpioPin,
+  interval,
+  appPort,
+} = configProcessor.performInitialization();
+
+const reader = new IntervalReader(reporters, interval, new TemperatureHumidityReader(gpioPin));
 
 Sensor.setup();
-process.on('exit', ()=> {
-    reader.stop();
-    Sensor.teardown();
-})
+process.on('exit', () => {
+  reader.stop();
+  Sensor.teardown();
+});
 
 reader.start();
 
 const app = express();
 
-app.use("/api",routes);
+app.use(contextRoot, routes);
 
-const port=process.env.APP_PORT || 8080
-
-app.listen(port, ()=> {
-    console.log(`Application listening on port ${port}`)
-})
-
-
+app.listen(appPort, () => {
+  console.log(`Application listening on port ${appPort}`);
+});

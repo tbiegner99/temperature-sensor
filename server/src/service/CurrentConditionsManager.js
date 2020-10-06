@@ -1,23 +1,22 @@
-class CurrentConditionsService{
+class CurrentConditionsService {
+  setCurrentTemperature(temperature) {
+    this.currentTemperature = temperature;
+  }
 
-    setCurrentTemperature(temperature) {
-                this._currentTemperature=temperature;
-    }
+  setCurrentHumidity(humidity) {
+    this.currentHumidity = humidity;
+  }
 
-    setCurrentHumidity(humidity) {
-                this._currentHumidity=humidity;
-    }
+  getCurrentTemperature() {
+    return { temperature: this.currentTemperature, zone: this.zone };
+  }
 
-    getCurrentTemperature() {
-        return {temperature: this._currentTemperature, zone:this.zone};
-    }
+  getCurrentHumidity() {
+    return { humidity: this.currentHumidity, zone: this.zone };
+  }
 
-    getCurrentHumidity() {
-        return {humidity: this._currentHumidity, zone:this.zone};
-    }
-
-    get zone() {
-        return process.env.ZONE_NAME
-    }
+  get zone() {
+    return process.env.ZONE_NAME;
+  }
 }
-module.exports=new CurrentConditionsService()
+module.exports = new CurrentConditionsService();

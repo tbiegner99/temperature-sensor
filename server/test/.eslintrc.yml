@@ -1,0 +1,4 @@
+env:
+  jest: true
+globals:
+  expect: true
