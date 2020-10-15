@@ -5,9 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/home/pi
-EnvironmentFile=/home/pi/Projects/temperature-sensor/environment
-ExecStart=/usr/bin/node /home/pi/Projects/temperature-sensor/server/src/app.js
+WorkingDirectory=$PWD
+ExecStart=$NODE_DIR $PWD/server/src/app.js --config=$PWD/config.json
 Restart=on-failure
 # Other restart options: always, on-abort, etc
 

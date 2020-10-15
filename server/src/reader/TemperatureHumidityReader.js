@@ -1,4 +1,4 @@
-const Sensor = require('dhtxx');
+const Sensor = require('@tjb/dhtxx');
 const Reader = require('./Reader');
 const HumidityReading = require('../reading/HumidityReading');
 const TemperatureReading = require('../reading/TemperatureReading');

@@ -18,19 +18,22 @@ class ConfigProcessor {
     }
   }
 
-  performInitialization() {
+  static getReporters(config) {
     const env = {
       ...process.env,
       httpClient,
       currentStatusManager,
     };
+    return new ReporterFactory(config.reporters, env).constructReporters();
+  }
 
+  performInitialization() {
     return {
       contextRoot: this.config.contextRoot || '/api',
       gpioPin: this.config.gpioPin || GpioPins.GPIO4,
       interval: this.config.interval || Timing.ONE_MIN,
       appPort: this.config.appPort || 8080,
-      reporters: new ReporterFactory(this.config.reporters, env).constructReporters(),
+      reporters: ConfigProcessor.getReporters(this.config),
     };
   }
 }

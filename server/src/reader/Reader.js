@@ -1,6 +1,6 @@
 class Reader {
   constructor(reporters) {
-    this.reporters = reporters;
+    this.reporters = reporters || [];
   }
 
   async readValues() {
@@ -20,7 +20,7 @@ class Reader {
     }
     const reportReadingForReporter = (reporter, reading) => async () => {
       try {
-        return await reporter.reportReading(reading);
+        await reporter.reportReading(reading);
       } catch (err) {
         console.log(`Reporter ${reporter.name} failed`, err);
       }
