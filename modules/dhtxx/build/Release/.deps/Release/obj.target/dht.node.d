@@ -1,1 +1,0 @@
-cmd_Release/obj.target/dht.node := g++ -shared -pthread -rdynamic  -Wl,-soname=dht.node -o Release/obj.target/dht.node -Wl,--start-group Release/obj.target/dht/src/node_dht.o Release/obj.target/dht/src/DHTXXD.o Release/obj.target/dht/src/NodeDhtReading.o -Wl,--end-group -lpigpio

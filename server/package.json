@@ -1,5 +1,5 @@
 {
-  "name": "temperature-sensor",
+  "name": "@tbiegner99/temperature-sensor",
   "version": "1.0.0",
   "description": "senses temperature and sends to server to save to db",
   "main": "index.js",

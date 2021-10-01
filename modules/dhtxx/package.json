@@ -1,7 +1,7 @@
 {
-  "name": "dhtxx",
+  "name": "@tbiegner99/dhtxx",
   "version": "1.0.0",
-  "description": "",
+  "description": "module to interact with the dht22 or dht11 hardware",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
