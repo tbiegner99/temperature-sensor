@@ -1,8 +1,8 @@
-const CurrentConditionsController = require("./controller/CurrentConditions");
-const express = require("express");
+const express = require('express');
+const CurrentConditionsController = require('./controller/CurrentConditions');
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/currentConditions", CurrentConditionsController.getCurrentCondition);
+router.get('/currentConditions', CurrentConditionsController.getCurrentCondition);
 
-module.exports = router
+module.exports = router;

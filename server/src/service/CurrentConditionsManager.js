@@ -1,23 +1,32 @@
-class CurrentConditionsService{
+/* eslint-disable no-underscore-dangle */
+class CurrentConditionsService {
+  setZoneInfo({ zoneName, zoneDescription }) {
+    this._zoneName = zoneName;
+    this._zoneDescription = zoneDescription;
+  }
 
-    setCurrentTemperature(temperature) {
-                this._currentTemperature=temperature;
-    }
+  setCurrentTemperature(temperature) {
+    this.currentTemperature = temperature;
+  }
 
-    setCurrentHumidity(humidity) {
-                this._currentHumidity=humidity;
-    }
+  setCurrentHumidity(humidity) {
+    this.currentHumidity = humidity;
+  }
 
-    getCurrentTemperature() {
-        return {temperature: this._currentTemperature, zone:this.zone};
-    }
+  getCurrentTemperature() {
+    return { temperature: this.currentTemperature, zone: this.zone };
+  }
 
-    getCurrentHumidity() {
-        return {humidity: this._currentHumidity, zone:this.zone};
-    }
+  getCurrentHumidity() {
+    return { humidity: this.currentHumidity, zone: this.zone };
+  }
 
-    get zone() {
-        return process.env.ZONE_NAME
-    }
+  get zoneName() {
+    return this._zoneName || process.env.ZONE_NAME;
+  }
+
+  get zoneDescription() {
+    return this._zoneDescription;
+  }
 }
-module.exports=new CurrentConditionsService()
+module.exports = new CurrentConditionsService();

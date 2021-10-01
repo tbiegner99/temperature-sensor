@@ -1,11 +1,11 @@
 class Formatter {
-    appliesTo(reading) {
-        return true;
-    }
+  appliesTo() {
+    return true;
+  }
 
-    format(reading) {
-        return `${reading.name}: ${reading.value}`
-    }
+  format(reading) {
+    return `${reading.name}: ${reading.value}`;
+  }
 }
 
-module.exports=Formatter
+module.exports = Formatter;
