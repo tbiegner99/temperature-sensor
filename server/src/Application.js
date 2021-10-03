@@ -1,4 +1,4 @@
-const Sensor = require('@tjb/dhtxx');
+const Sensor = require('@tbiegner99/dhtxx');
 const express = require('express');
 const bodyParser = require('body-parser');
 const IntervalReader = require('./reader/IntervalReader');
