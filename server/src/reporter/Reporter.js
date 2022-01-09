@@ -1,17 +1,17 @@
 class Reporter {
-    shouldReportReading() {
-        return true;
+  shouldReportReading() {
+    return true;
+  }
+
+  report(reading) {
+    if (this.shouldReportReading(reading)) {
+      this.reportReading();
     }
+  }
 
-    report(reading) {
-        if(this.shouldReportReading(reading)){
-            this.reportReading();
-        }
-    }
+  reportReading(reading) {}
 
-    reportReading(reading) {}
-
-    reportError(error){}
+  reportError(error) {}
 }
 
 module.exports = Reporter;

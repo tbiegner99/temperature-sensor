@@ -1,10 +1,11 @@
 const CurrentConditionsManager = require('../service/CurrentConditionsManager');
 const { Temperature } = require('../config/units');
 
-const getCurrentCondition = (req, res, next) => {
+const getCurrentCondition = (req, res) => {
   res.status(200).send({
     zoneName: CurrentConditionsManager.zoneName,
     zoneDescription: CurrentConditionsManager.zoneDescription,
+    lastUpdated: CurrentConditionsManager.lastUpdate,
     humidity: {
       value: CurrentConditionsManager.getCurrentHumidity().humidity,
       unit: '%',

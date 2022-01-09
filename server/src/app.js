@@ -1,5 +1,5 @@
 const Getopt = require('node-getopt');
-
+const path = require('path');
 const routes = require('./routes');
 const ConfigProcessor = require('./ConfigProcessor');
 const Application = require('./Application');
@@ -19,7 +19,7 @@ if (!options.config) {
   console.error('Config file is required. Pass --config');
   process.exit(1);
 }
-const configProcessor = new ConfigProcessor(options.config);
+const configProcessor = ConfigProcessor.createFromFile(path.resolve(process.cwd(), options.config));
 
 const config = configProcessor.performInitialization();
 

@@ -11,8 +11,13 @@ class CurrentStatusReporter extends Reporter {
     return reading.name === ReadingTypes.TEMPERATURE || reading.name === ReadingTypes.HUMIDITY;
   }
 
+  reportError(err) {
+    this.currentStatusManager.setLastError(err);
+  }
+
   reportReading(reading) {
-    this.currentStatusManager.setLastUpdate(new Date())
+    this.currentStatusManager.setLastUpdate(new Date());
+    this.currentStatusManager.clearErrors();
     switch (reading.name) {
       case ReadingTypes.TEMPERATURE:
         this.currentStatusManager.setCurrentTemperature(reading.value);

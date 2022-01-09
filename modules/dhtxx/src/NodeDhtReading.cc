@@ -8,7 +8,7 @@ NodeDhtReading::NodeDhtReading(Napi::Env env, int gpio, Napi::Promise::Deferred 
 }
 
 NodeDhtReading::~NodeDhtReading(){
-	free(dht);
+	DHTXXD_cancel(this->dht);
 }
 
 void NodeDhtReading::Execute() {
@@ -35,10 +35,9 @@ void NodeDhtReading::OnOK() {
 	resolve.Set("temperature",Napi::Number::New(Env(),dht->_data.temperature));
 	resolve.Set("humidity",Napi::Number::New(Env(),dht->_data.humidity));
 	this->deferred.Resolve(resolve);
-	delete this;
 }
 
 void NodeDhtReading::OnError(const Napi::Error& err) {
 	this->deferred.Reject(err.Value());
-	delete this;
+	DHTXXD_cancel(this->dht);
 }

@@ -5,7 +5,7 @@ class CurrentConditionsService {
     this._zoneDescription = zoneDescription;
     this._lastUpdate = null;
     this._lastError = null;
-    this._errors=0;
+    this._errors = 0;
   }
 
   setCurrentTemperature(temperature) {
@@ -17,16 +17,16 @@ class CurrentConditionsService {
   }
 
   setLastUpdate(date) {
-    this._lastUpdate=date;
+    this._lastUpdate = date;
   }
 
   clearErrors() {
-    this._errors=0;
-    this._lastError=null;
+    this._errors = 0;
+    this._lastError = null;
   }
 
   setLastError(error) {
-    this._lastError=error;
+    this._lastError = error;
     this._errors++;
   }
 
