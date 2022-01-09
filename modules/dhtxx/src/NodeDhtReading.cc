@@ -35,8 +35,10 @@ void NodeDhtReading::OnOK() {
 	resolve.Set("temperature",Napi::Number::New(Env(),dht->_data.temperature));
 	resolve.Set("humidity",Napi::Number::New(Env(),dht->_data.humidity));
 	this->deferred.Resolve(resolve);
+	delete this;
 }
 
 void NodeDhtReading::OnError(const Napi::Error& err) {
 	this->deferred.Reject(err.Value());
+	delete this;
 }

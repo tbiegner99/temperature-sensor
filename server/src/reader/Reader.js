@@ -9,7 +9,23 @@ class Reader {
       return this.reportReadings(readings);
     } catch (err) {
       console.error('an error occurred while taking readings', err);
+       await  this.reportError(err);
       return [];
+    }
+  }
+
+  async reportError(error) {
+    const reportErrorForReporter = (reporter, reading) => async () => {
+      try {
+        await reporter.reportError(reading);
+      } catch (err) {
+        console.log(`Error reporting for ${reporter.name} failed`, err);
+      }
+    };
+    // eslint-disable-next-line no-restricted-syntax
+    for (const reporter of this.reporters) {
+      const promises = values.map((reading) => reportErrorForReporter(reporter, error)());
+      await Promise.all(promises); // eslint-disable-line no-await-in-loop
     }
   }
 

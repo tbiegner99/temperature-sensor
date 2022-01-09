@@ -1,21 +1,18 @@
 {
-<<<<<<< HEAD
   "name": "@tbiegner99/temperature-sensor",
-=======
-  "name": "@tjb/temperature-sensor",
->>>>>>> 5deb7ceffe686d99bc4be4dec49c37d9054e05d1
   "version": "1.0.0",
   "description": "senses temperature and sends to server to save to db",
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --coverage",
     "test-debug": "jest --watch",
+    "lint":"eslint src",
     "precommit": "eslint --fix src &&  pretty-quick --staged"
   },
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "@tjb/dhtxx": "file:../modules/dhtxx",
+    "@tbiegner99/dhtxx": "file:../modules/dhtxx",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "node-getopt": "^0.3.2",

@@ -12,6 +12,7 @@ class CurrentStatusReporter extends Reporter {
   }
 
   reportReading(reading) {
+    this.currentStatusManager.setLastUpdate(new Date())
     switch (reading.name) {
       case ReadingTypes.TEMPERATURE:
         this.currentStatusManager.setCurrentTemperature(reading.value);

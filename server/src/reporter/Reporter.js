@@ -10,6 +10,8 @@ class Reporter {
     }
 
     reportReading(reading) {}
+
+    reportError(error){}
 }
 
 module.exports = Reporter;
