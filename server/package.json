@@ -1,12 +1,12 @@
 {
   "name": "@tbiegner99/temperature-sensor",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "senses temperature and sends to server to save to db",
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --coverage",
     "test-debug": "jest --watch",
-    "lint":"eslint src",
+    "lint": "eslint src",
     "precommit": "eslint --fix src &&  pretty-quick --staged"
   },
   "author": "TJ Biegner",
