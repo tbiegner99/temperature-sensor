@@ -97,11 +97,15 @@ export class KafkaReporter extends Reporter {
   }
 
   async reportReading(reading: Reading) {
-    if (!this.isConnected) {
-      await this.init();
+    try {
+      if (!this.isConnected) {
+        await this.init();
+      }
+      const type = reading.type.toLowerCase();
+      await this.createReading(this.zoneName, type, reading.value);
+      this.lastReported = Date.now();
+    } catch (err) {
+      console.warn('Error saving reading to kafka', err);
     }
-    const type = reading.type.toLowerCase();
-    await this.createReading(this.zoneName, type, reading.value);
-    this.lastReported = Date.now();
   }
 }
