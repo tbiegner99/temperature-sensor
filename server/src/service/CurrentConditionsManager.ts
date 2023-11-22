@@ -1,6 +1,20 @@
 /* eslint-disable no-underscore-dangle */
-class CurrentConditionsService {
-  setZoneInfo({ zoneName, zoneDescription }) {
+
+export interface ZoneInfo {
+  zoneName: string;
+  zoneDescription: string;
+}
+
+export class CurrentConditionsService {
+  _zoneName: string;
+  _zoneDescription: string;
+  _errors: number;
+  currentTemperature: number;
+  currentHumidity: number;
+  _lastUpdate: Date | null;
+  _lastError: Error | null;
+
+  setZoneInfo({ zoneName, zoneDescription }: ZoneInfo) {
     this._zoneName = zoneName;
     this._zoneDescription = zoneDescription;
     this._lastUpdate = null;
@@ -37,6 +51,12 @@ class CurrentConditionsService {
   getCurrentHumidity() {
     return { humidity: this.currentHumidity, zone: this.zone };
   }
+  get zone(): ZoneInfo {
+    return {
+      zoneName: this.zoneName,
+      zoneDescription: this._zoneDescription,
+    };
+  }
 
   get errorCount() {
     return this._errors;
@@ -58,4 +78,4 @@ class CurrentConditionsService {
     return this._zoneDescription;
   }
 }
-module.exports = new CurrentConditionsService();
+export default new CurrentConditionsService();

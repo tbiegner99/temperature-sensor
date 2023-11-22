@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const IntervalReader = require('./reader/IntervalReader');
 const TemperatureHumidityReader = require('./reader/TemperatureHumidityReader');
 
-module.exports = class Application {
+export class Application {
   constructor(config) {
     this.config = config;
     this.contextRoot = config.contextRoot;

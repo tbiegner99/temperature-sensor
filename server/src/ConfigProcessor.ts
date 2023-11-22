@@ -1,16 +1,24 @@
-const httpClient = require('axios');
-const currentStatusManager = require('./service/CurrentConditionsManager');
-const ReporterFactory = require('./reporter/ReporterFactory');
-const { GpioPins, Timing } = require('./config/constants');
+import  httpClient from 'axios';
+import currentStatusManager from './service/CurrentConditionsManager';
+import  {ReporterFactory}  from './reporter/ReporterFactory';
+import { GpioPins, Timing } from './config/constants';
 
-class ConfigProcessor {
-  constructor(config) {
+export interface Config{
+  contextRoot:string,
+  gpioPin:number,
+  interval:number,
+  appPort:number
+}
+
+export class ConfigProcessor {
+  config:Config;
+  constructor(config:Config) {
     this.config = config;
   }
 
-  static createFromFile(file) {
+  static async createFromFile(file) :Promise<ConfigProcessor> {
     try {
-      const config = require(file); // eslint-disable-line global-require, import/no-dynamic-require
+      const config = await import(file); // eslint-disable-line global-require, import/no-dynamic-require
       return new ConfigProcessor(config);
     } catch (err) {
       console.error(`Error loading config file: ${file}`, err);
@@ -38,4 +46,3 @@ class ConfigProcessor {
   }
 }
 
-module.exports = ConfigProcessor;

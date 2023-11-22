@@ -1,9 +1,10 @@
-const Formatter = require('./DefaultFormatter');
-const { ReadingTypes } = require('../../config/constants');
-const { Temperature } = require('../../config/units');
-const TemperatureConverter = require('../../unitConverter/TemperatureConverter');
+import {Formatter}  from './DefaultFormatter';
+import { ReadingTypes } from '../../config/constants';
+import  { Temperature, TemperatureUnit } from '../../config/units';
+import {TemperatureConverter} from '../../unitConverter/TemperatureConverter';
 
-class TemperatureFormatter extends Formatter {
+export class TemperatureFormatter extends Formatter {
+  unit : TemperatureUnit
   constructor(config) {
     super();
     this.unit = config.unit ? config.unit.toUpperCase() : null;
@@ -23,4 +24,3 @@ class TemperatureFormatter extends Formatter {
   }
 }
 
-module.exports = TemperatureFormatter;

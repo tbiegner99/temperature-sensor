@@ -1,10 +1,10 @@
-const Reader = require('./Reader');
+import { Reader} from './Reader';
 
-class IntervalReader extends Reader {
-  constructor(reporters, interval, reader) {
+export class IntervalReader extends Reader {
+  paused: boolean;
+  intervalId?:number;
+  constructor(reporters, public interval, public reader) {
     super(reporters);
-    this.reader = reader;
-    this.interval = interval;
     this.paused = false;
   }
 
@@ -35,4 +35,3 @@ class IntervalReader extends Reader {
     }
   }
 }
-module.exports = IntervalReader;

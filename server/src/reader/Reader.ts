@@ -1,6 +1,14 @@
-class Reader {
-  constructor(reporters) {
+import { Reading } from "../reading/Reading";
+import { Reporter } from "../reporter/Reporter";
+
+export class Reader {
+  reporters:Reporter[];
+  constructor(reporters?: Reporter[]) {
     this.reporters = reporters || [];
+  }
+
+  async takeReadings() : Promise<Reading[]> {
+    throw new Error("Not implemented error")
   }
 
   async readValues() {
@@ -24,8 +32,7 @@ class Reader {
     };
     // eslint-disable-next-line no-restricted-syntax
     for (const reporter of this.reporters) {
-      const promises = values.map((reading) => reportErrorForReporter(reporter, error)());
-      await Promise.all(promises); // eslint-disable-line no-await-in-loop
+      await reportErrorForReporter(reporter, error);
     }
   }
 
@@ -49,4 +56,3 @@ class Reader {
   }
 }
 
-module.exports = Reader;

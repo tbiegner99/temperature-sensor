@@ -1,7 +1,10 @@
-const Reporter = require('./Reporter');
-const { ReadingTypes } = require('../config/constants');
 
-class CurrentStatusReporter extends Reporter {
+import { ReadingTypes } from '../config/constants';
+import {CurrentConditionsService} from '../service/CurrentConditionsManager';
+import { Reporter } from './Reporter';
+
+export class CurrentStatusReporter extends Reporter {
+  currentStatusManager:CurrentConditionsService;
   constructor(config, env) {
     super();
     this.currentStatusManager = env.currentStatusManager;
@@ -31,4 +34,3 @@ class CurrentStatusReporter extends Reporter {
   }
 }
 
-module.exports = CurrentStatusReporter;

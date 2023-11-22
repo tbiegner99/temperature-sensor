@@ -1,5 +1,5 @@
-const CurrentConditionsManager = require('../service/CurrentConditionsManager');
-const { Temperature } = require('../config/units');
+import CurrentConditionsManager from '../service/CurrentConditionsManager';
+import  { Temperature } from'../config/units';
 
 const getCurrentCondition = (req, res) => {
   res.status(200).send({
@@ -17,6 +17,6 @@ const getCurrentCondition = (req, res) => {
   });
 };
 
-module.exports = {
+export {
   getCurrentCondition,
 };

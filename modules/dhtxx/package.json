@@ -1,18 +1,24 @@
 {
   "name": "@tbiegner99/dhtxx",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "description": "module to interact with the dht22 or dht11 hardware",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "author": "TJ Biegner",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.9.3",
     "node-gyp": "^7.1.0"
   },
   "dependencies": {
     "node-addon-api": "^3.0.0"
   },
+  "files": [
+    "/dist"
+  ],
   "gypfile": true
 }

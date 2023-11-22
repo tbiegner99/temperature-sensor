@@ -1,7 +1,15 @@
-const Reporter = require('./Reporter');
-const { ReadingTypes } = require('../config/constants');
+import { AxiosInstance } from 'axios';
+import { ReadingTypes } from '../config/constants';
+import { Reporter } from './Reporter';
 
-class DatabaseReporter extends Reporter {
+export class DatabaseReporter extends Reporter {
+  isZoneCreated: boolean;
+  httpClient: AxiosInstance;
+  reporterHost: string;
+  zoneName: string;
+  zoneDescription: string;
+  lastReported: number | null;
+  reportingInterval: number;
   constructor(config, env) {
     super();
     this.isZoneCreated = false;
@@ -31,7 +39,7 @@ class DatabaseReporter extends Reporter {
 
   isReporterActive() {
     return (
-      this.isisOutsideOfReportingInterval() && Boolean(this.zoneName) && Boolean(this.reporterHost)
+      this.isOutsideOfReportingInterval() && Boolean(this.zoneName) && Boolean(this.reporterHost)
     );
   }
 
@@ -61,5 +69,3 @@ class DatabaseReporter extends Reporter {
     await this.createReading(this.zoneName, type, reading.value);
   }
 }
-
-module.exports = DatabaseReporter;
