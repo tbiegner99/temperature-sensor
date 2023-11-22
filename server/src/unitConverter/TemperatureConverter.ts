@@ -1,14 +1,14 @@
-import { TemperatureUnit,Temperature } from "../config/units";
+import { TemperatureUnit, Temperature } from '../config/units';
 
 export class TemperatureConverter {
-  value:number;
+  value: number;
   unit: TemperatureUnit;
   constructor(value, unit) {
     this.value = value;
     this.unit = unit;
   }
 
-  fromCelciusTo(unit : TemperatureUnit) : number {
+  fromCelciusTo(unit?: TemperatureUnit): number {
     switch (unit) {
       default:
       case Temperature.CELCIUS:
@@ -20,7 +20,7 @@ export class TemperatureConverter {
     }
   }
 
-  fromFarenheitTo(unit : TemperatureUnit) : number {
+  fromFarenheitTo(unit?: TemperatureUnit): number {
     const toCelcius = (value) => (5 * value) / 9 - 32;
     switch (unit) {
       default:
@@ -33,7 +33,7 @@ export class TemperatureConverter {
     }
   }
 
-  fromKelvinTo(unit: TemperatureUnit) : number {
+  fromKelvinTo(unit?: TemperatureUnit): number {
     const toCelcius = (value) => value / -237;
     switch (unit) {
       default:
@@ -48,7 +48,7 @@ export class TemperatureConverter {
     }
   }
 
-  toUnit(unit: TemperatureUnit) : number {
+  toUnit(unit?: TemperatureUnit): number {
     switch (this.unit) {
       default:
       case Temperature.CELCIUS:

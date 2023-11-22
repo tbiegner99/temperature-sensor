@@ -1,6 +1,14 @@
 import { AxiosInstance } from 'axios';
 import { ReadingTypes } from '../config/constants';
 import { Reporter } from './Reporter';
+import { ReporterConfig } from '../ConfigProcessor';
+
+export interface DatabaseReporterConfig extends ReporterConfig {
+  host: string;
+  zoneName?: string;
+  reportingInterval: number;
+  zoneDescription: string;
+}
 
 export class DatabaseReporter extends Reporter {
   isZoneCreated: boolean;
@@ -10,7 +18,7 @@ export class DatabaseReporter extends Reporter {
   zoneDescription: string;
   lastReported: number | null;
   reportingInterval: number;
-  constructor(config, env) {
+  constructor(config: DatabaseReporterConfig, env) {
     super();
     this.isZoneCreated = false;
     this.httpClient = env.httpClient;

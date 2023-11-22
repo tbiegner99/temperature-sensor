@@ -1,24 +1,26 @@
-import {TemperatureFormatter} from './TemperatureFormatter';
-import {HumidityFormatter} from './HumidityFormatter';
+import { TemperatureFormatter } from './TemperatureFormatter';
+import { HumidityFormatter } from './HumidityFormatter';
 import { Formatter } from './DefaultFormatter';
 
-type FormatterType = {new (config?:any): Formatter}
-const registeredFormatters : {[x:string]:FormatterType} = {
+type FormatterType = { new (config?: any): Formatter };
+const registeredFormatters: { [x: string]: FormatterType } = {
   temperature: TemperatureFormatter,
   humidity: HumidityFormatter,
 };
 
+export interface FormatterConfig {}
+
 export class FormatterFactory {
-  config:any;
-  constructor(config) {
+  config: FormatterConfig;
+  constructor(config: FormatterConfig) {
     this.config = config;
   }
 
-  async constructFormatters() : Promise<Formatter[]> {
+  async constructFormatters(): Promise<Formatter[]> {
     const formatterNames = Object.keys(this.config);
-    const formatters : Formatter[]= [];
-    for(var formatter of formatterNames) {
-      let FormatterClass : FormatterType  = registeredFormatters[formatter];
+    const formatters: Formatter[] = [];
+    for (var formatter of formatterNames) {
+      let FormatterClass: FormatterType = registeredFormatters[formatter];
       const config = this.config[formatter];
       if (FormatterClass) {
         formatters.push(new FormatterClass(config));
@@ -30,8 +32,7 @@ export class FormatterFactory {
           console.warn(`Unknown Formatter: ${formatter}`);
         }
       }
-    };
+    }
     return formatters;
   }
 }
-

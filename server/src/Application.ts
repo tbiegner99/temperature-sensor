@@ -1,12 +1,15 @@
-const Sensor = require('@tbiegner99/dhtxx');
-const express = require('express');
-const bodyParser = require('body-parser');
-const IntervalReader = require('./reader/IntervalReader');
-const TemperatureHumidityReader = require('./reader/TemperatureHumidityReader');
+import { Config } from './ConfigProcessor';
+import { DHTModule } from '@tbiegner99/dhtxx';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { IntervalReader } from './reader/IntervalReader';
+import { TemperatureHumidityReader } from './reader/TemperatureHumidityReader';
 
 export class Application {
-  constructor(config) {
-    this.config = config;
+  app: any;
+  contextRoot: string | undefined;
+  baseRouter: any;
+  constructor(private config: Config) {
     this.contextRoot = config.contextRoot;
     this.app = express();
     this.app.use(bodyParser.json());
@@ -29,12 +32,12 @@ export class Application {
   initializeSensors() {
     const { reporters, gpioPin, interval } = this.config;
 
-    const reader = new IntervalReader(reporters, interval, new TemperatureHumidityReader(gpioPin));
+    const reader = new IntervalReader(reporters, interval, new TemperatureHumidityReader(gpioPin!));
 
-    Sensor.setup();
+    DHTModule.setup();
     process.on('exit', () => {
       reader.stop();
-      Sensor.teardown();
+      DHTModule.teardown();
     });
 
     reader.start();
@@ -54,8 +57,8 @@ export class Application {
           return;
         }
         console.log(`Application listening on port ${this.config.appPort}`);
-        resolve();
+        resolve(undefined);
       });
     });
   }
-};
+}

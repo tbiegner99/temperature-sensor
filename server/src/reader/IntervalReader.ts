@@ -1,9 +1,13 @@
-import { Reader} from './Reader';
+import { Reader } from './Reader';
 
 export class IntervalReader extends Reader {
   paused: boolean;
-  intervalId?:number;
-  constructor(reporters, public interval, public reader) {
+  intervalId?: NodeJS.Timeout;
+  constructor(
+    reporters,
+    public interval,
+    public reader
+  ) {
     super(reporters);
     this.paused = false;
   }

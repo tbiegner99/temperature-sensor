@@ -1,11 +1,11 @@
-
+import { ReporterConfig } from '../ConfigProcessor';
 import { ReadingTypes } from '../config/constants';
-import {CurrentConditionsService} from '../service/CurrentConditionsManager';
+import { CurrentConditionsService } from '../service/CurrentConditionsManager';
 import { Reporter } from './Reporter';
 
 export class CurrentStatusReporter extends Reporter {
-  currentStatusManager:CurrentConditionsService;
-  constructor(config, env) {
+  currentStatusManager: CurrentConditionsService;
+  constructor(config: ReporterConfig, env) {
     super();
     this.currentStatusManager = env.currentStatusManager;
   }
@@ -33,4 +33,3 @@ export class CurrentStatusReporter extends Reporter {
     }
   }
 }
-

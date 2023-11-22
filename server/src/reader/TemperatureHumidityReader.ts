@@ -8,7 +8,7 @@ import { Reporter } from '../reporter/Reporter';
 export class TemperatureHumidityReader extends Reader {
   pinNumber: number;
   paused: boolean;
-  constructor(pinNumber: number, reporters: Reporter[]) {
+  constructor(pinNumber: number, reporters?: Reporter[]) {
     super(reporters);
     this.pinNumber = pinNumber;
     this.paused = false;

@@ -1,18 +1,19 @@
-const axios = require('axios');
-const ConfigProcessor = require('../src/ConfigProcessor');
-const LoggerReporter = require('../src/reporter/LoggerReporter');
-const CurrentStatusReporter = require('../src/reporter/CurrentStatusReporter');
-const DatabaseReporter = require('../src/reporter/DatabaseReporter');
-const HumidityFormatter = require('../src/reporter/formatter/HumidityFormatter');
-const TemperatureFormatter = require('../src/reporter/formatter/TemperatureFormatter');
-const CurrentConditionsService = require('../src/service/CurrentConditionsManager');
+import axios from 'axios';
+import { describe, expect, it, beforeEach } from '@jest/globals';
+import { ConfigProcessor } from '../src/ConfigProcessor';
+import { LoggerReporter } from '../src/reporter/LoggerReporter';
+import { CurrentStatusReporter } from '../src/reporter/CurrentStatusReporter';
+import { DatabaseReporter } from '../src/reporter/DatabaseReporter';
+import { HumidityFormatter } from '../src/reporter/formatter/HumidityFormatter';
+import { TemperatureFormatter } from '../src/reporter/formatter/TemperatureFormatter';
+import serviceInstance from '../src/service/CurrentConditionsManager';
 
 describe('Config Processor', () => {
   describe('Defaults', () => {
     let result;
-    beforeEach(() => {
+    beforeEach(async () => {
       const testConfig = {};
-      result = new ConfigProcessor(testConfig).performInitialization();
+      result = await new ConfigProcessor(testConfig).performInitialization();
     });
 
     it('returns correct context root', () => {
@@ -29,12 +30,12 @@ describe('Config Processor', () => {
   });
   describe('Basic config attributes', () => {
     let result;
-    beforeEach(() => {
+    beforeEach(async () => {
       const testConfig = {
         contextRoot: '/root',
         appPort: 8181,
       };
-      result = new ConfigProcessor(testConfig).performInitialization();
+      result = await new ConfigProcessor(testConfig).performInitialization();
     });
 
     it('returns correct context root', () => {
@@ -54,13 +55,13 @@ describe('Config Processor', () => {
     let result;
     describe('logger reporter', () => {
       describe('when no configuration', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           const testConfig = {
             reporters: {
               logger: {},
             },
           };
-          result = new ConfigProcessor(testConfig).performInitialization();
+          result = await new ConfigProcessor(testConfig).performInitialization();
         });
         it('returns exactly one reporter that is a logger reporter', () => {
           expect(result.reporters).toHaveLength(1);
@@ -73,7 +74,7 @@ describe('Config Processor', () => {
       });
 
       describe('with temp and humidity formatters', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           const testConfig = {
             reporters: {
               logger: {
@@ -84,7 +85,7 @@ describe('Config Processor', () => {
               },
             },
           };
-          result = new ConfigProcessor(testConfig).performInitialization();
+          result = await new ConfigProcessor(testConfig).performInitialization();
         });
         it('has temperature and humidity formatter', () => {
           expect(result.reporters[0].formatters).toHaveLength(2);
@@ -99,7 +100,7 @@ describe('Config Processor', () => {
       describe('with temp formatters', () => {
         ['k', 'c', 'f', null, 'C', 'K', 'F', undefined].forEach((validUnit) => {
           describe(`with valid unit ${validUnit}`, () => {
-            beforeEach(() => {
+            beforeEach(async () => {
               const testConfig = {
                 reporters: {
                   logger: {
@@ -111,7 +112,7 @@ describe('Config Processor', () => {
                   },
                 },
               };
-              result = new ConfigProcessor(testConfig).performInitialization();
+              result = await new ConfigProcessor(testConfig).performInitialization();
             });
             it('has temperature anformatter', () => {
               expect(result.reporters[0].formatters).toHaveLength(1);
@@ -127,25 +128,25 @@ describe('Config Processor', () => {
     });
 
     describe('current status reporter', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         const testConfig = {
           reporters: {
             currentStatus: {},
           },
         };
-        result = new ConfigProcessor(testConfig).performInitialization();
+        result = await new ConfigProcessor(testConfig).performInitialization();
       });
       it('returns exactly one reporter that is a logger reporter', () => {
         expect(result.reporters).toHaveLength(1);
         expect(result.reporters[0]).toBeInstanceOf(CurrentStatusReporter);
       });
       it('has instance of current status manager', () => {
-        expect(result.reporters[0].currentStatusManager).toEqual(CurrentConditionsService);
+        expect(result.reporters[0].currentStatusManager).toEqual(serviceInstance);
       });
     });
 
     describe('database reporter', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         process.env.ZONE_NAME = 'zone_name';
         process.env.ZONE_DESCRIPTION = 'zone_desc';
         const testConfig = {
@@ -155,7 +156,7 @@ describe('Config Processor', () => {
             },
           },
         };
-        result = new ConfigProcessor(testConfig).performInitialization();
+        result = await new ConfigProcessor(testConfig).performInitialization();
       });
       it('returns exactly one reporter that is a Database reporter', () => {
         expect(result.reporters).toHaveLength(1);

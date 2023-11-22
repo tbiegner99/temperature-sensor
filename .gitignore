@@ -4,3 +4,4 @@ environment
 build
 coverage
 config.json
+dist
