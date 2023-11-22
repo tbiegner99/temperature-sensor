@@ -2,6 +2,7 @@ import { Formatter } from './DefaultFormatter';
 import { ReadingTypes } from '../../config/constants';
 import { Temperature, TemperatureUnit } from '../../config/units';
 import { TemperatureConverter } from '../../unitConverter/TemperatureConverter';
+import { Reading } from '../../reading/Reading';
 
 export interface TemperatureFormatterConfig {
   unit?: TemperatureUnit;
@@ -18,11 +19,11 @@ export class TemperatureFormatter extends Formatter {
     }
   }
 
-  appliesTo(reading) {
-    return reading.name === ReadingTypes.TEMPERATURE;
+  appliesTo(reading: Reading) {
+    return reading.type === ReadingTypes.TEMPERATURE;
   }
 
-  format(reading) {
+  format(reading: Reading) {
     const converter = new TemperatureConverter(reading.value, reading.unit);
     return `Temperature: ${converter.toUnit(this.unit).toFixed(2)} ${this.unit}`;
   }

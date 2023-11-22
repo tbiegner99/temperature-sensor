@@ -40,13 +40,13 @@ CFLAGS_CC_Debug := \
 	-std=gnu++17
 
 INCS_Debug := \
-	-I/home/pi/.cache/node-gyp/17.3.0/include/node \
-	-I/home/pi/.cache/node-gyp/17.3.0/src \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/openssl/config \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/openssl/openssl/include \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/uv/include \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/zlib \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/v8/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/include/node \
+	-I/home/pi/.cache/node-gyp/18.18.2/src \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/openssl/config \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/openssl/openssl/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/uv/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/zlib \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/v8/include \
 	-I/home/pi/Documents/temperature-sensor/modules/dhtxx/node_modules/node-addon-api
 
 DEFS_Release := \
@@ -84,13 +84,13 @@ CFLAGS_CC_Release := \
 	-std=gnu++17
 
 INCS_Release := \
-	-I/home/pi/.cache/node-gyp/17.3.0/include/node \
-	-I/home/pi/.cache/node-gyp/17.3.0/src \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/openssl/config \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/openssl/openssl/include \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/uv/include \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/zlib \
-	-I/home/pi/.cache/node-gyp/17.3.0/deps/v8/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/include/node \
+	-I/home/pi/.cache/node-gyp/18.18.2/src \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/openssl/config \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/openssl/openssl/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/uv/include \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/zlib \
+	-I/home/pi/.cache/node-gyp/18.18.2/deps/v8/include \
 	-I/home/pi/Documents/temperature-sensor/modules/dhtxx/node_modules/node-addon-api
 
 OBJS := \

@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { ReadingTypes } from '../config/constants';
 import { Reporter } from './Reporter';
 import { ReporterConfig } from '../ConfigProcessor';
+import { Reading } from '../reading/Reading';
 
 export interface DatabaseReporterConfig extends ReporterConfig {
   host: string;
@@ -29,9 +30,13 @@ export class DatabaseReporter extends Reporter {
     this.reportingInterval = config.reportingInterval;
   }
 
+  getName() {
+    return 'databaseReporter';
+  }
+
   shouldReportReading(reading) {
     if (this.isReporterActive()) {
-      return reading.name === ReadingTypes.TEMPERATURE || reading.name === ReadingTypes.HUMIDITY;
+      return reading.type === ReadingTypes.TEMPERATURE || reading.type === ReadingTypes.HUMIDITY;
     }
     return false;
   }
@@ -67,12 +72,14 @@ export class DatabaseReporter extends Reporter {
     );
   }
 
-  async reportReading(reading) {
+  async reportError() {}
+
+  async reportReading(reading: Reading) {
     if (!this.isZoneCreated) {
       await this.createZone(this.zoneName);
       this.isZoneCreated = true;
     }
-    const type = reading.name.toLowerCase();
+    const type = reading.type.toLowerCase();
     this.lastReported = Date.now();
     await this.createReading(this.zoneName, type, reading.value);
   }

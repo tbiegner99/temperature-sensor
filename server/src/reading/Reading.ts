@@ -1,9 +1,8 @@
 export class Reading {
-  constructor(private _name, private _value, private _unit) {}
-  
+  constructor(private _type, private _value, private _unit) {}
 
-  get name() {
-    return this._name;
+  get type() {
+    return this._type;
   }
 
   get value() {
@@ -14,4 +13,3 @@ export class Reading {
     return this._unit;
   }
 }
-

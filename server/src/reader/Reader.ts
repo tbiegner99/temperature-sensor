@@ -1,14 +1,14 @@
-import { Reading } from "../reading/Reading";
-import { Reporter } from "../reporter/Reporter";
+import { Reading } from '../reading/Reading';
+import { Reporter } from '../reporter/Reporter';
 
 export class Reader {
-  reporters:Reporter[];
+  reporters: Reporter[];
   constructor(reporters?: Reporter[]) {
     this.reporters = reporters || [];
   }
 
-  async takeReadings() : Promise<Reading[]> {
-    throw new Error("Not implemented error")
+  async takeReadings(): Promise<Reading[]> {
+    throw new Error('Not implemented error');
   }
 
   async readValues() {
@@ -17,7 +17,7 @@ export class Reader {
       return this.reportReadings(readings);
     } catch (err) {
       console.error('an error occurred while taking readings', err);
-       await  this.reportError(err);
+      await this.reportError(err);
       return [];
     }
   }
@@ -27,7 +27,7 @@ export class Reader {
       try {
         await reporter.reportError(reading);
       } catch (err) {
-        console.log(`Error reporting for ${reporter.name} failed`, err);
+        console.log(`Error reporting for ${reporter.getName()} failed`, err);
       }
     };
     // eslint-disable-next-line no-restricted-syntax
@@ -41,11 +41,13 @@ export class Reader {
     if (!Array.isArray(readings)) {
       values = [readings];
     }
-    const reportReadingForReporter = (reporter, reading) => async () => {
-      try {
-        await reporter.reportReading(reading);
-      } catch (err) {
-        console.log(`Reporter ${reporter.name} failed`, err);
+    const reportReadingForReporter = (reporter: Reporter, reading: Reading) => async () => {
+      if (reporter.shouldReportReading(reading)) {
+        try {
+          await reporter.reportReading(reading);
+        } catch (err) {
+          console.log(`Reporter ${reporter.getName()} failed`, err);
+        }
       }
     };
     // eslint-disable-next-line no-restricted-syntax
@@ -55,4 +57,3 @@ export class Reader {
     }
   }
 }
-

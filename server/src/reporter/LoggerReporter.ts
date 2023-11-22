@@ -2,6 +2,7 @@ import { ReporterConfig } from '../ConfigProcessor';
 import { Reporter } from './Reporter';
 import { Formatter } from './formatter/DefaultFormatter';
 import { FormatterConfig, FormatterFactory } from './formatter/FormatterFactory';
+import { Reading } from '../reading/Reading';
 
 export interface LoggerReporterConfig extends ReporterConfig {
   host: string;
@@ -13,11 +14,14 @@ export interface LoggerReporterConfig extends ReporterConfig {
 
 export class LoggerReporter extends Reporter {
   formatters: Formatter[];
-  constructor(
-    public config: LoggerReporterConfig,
-    public env: any
-  ) {
+  constructor(public config: LoggerReporterConfig, public env: any) {
     super();
+  }
+
+  async reportError() {}
+
+  getName() {
+    return 'loggerReporter';
   }
 
   async init() {
@@ -26,7 +30,7 @@ export class LoggerReporter extends Reporter {
       : [];
   }
 
-  formatReading(reading) {
+  formatReading(reading: Reading) {
     for (let i = 0; i < this.formatters.length; i++) {
       if (this.formatters[i].appliesTo(reading)) {
         return this.formatters[i].format(reading);
@@ -35,7 +39,7 @@ export class LoggerReporter extends Reporter {
     return new Formatter().format(reading);
   }
 
-  reportReading(reading) {
+  async reportReading(reading) {
     console.log(this.formatReading(reading));
   }
 }

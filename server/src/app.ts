@@ -1,8 +1,8 @@
-const Getopt = require('node-getopt');
-const path = require('path');
-const routes = require('./routes');
-const ConfigProcessor = require('./ConfigProcessor');
-const Application = require('./Application');
+import Getopt from 'node-getopt';
+import path from 'path';
+import routes from './routes';
+import { ConfigProcessor } from './ConfigProcessor';
+import { Application } from './Application';
 
 async function run() {
   // Getopt arguments options

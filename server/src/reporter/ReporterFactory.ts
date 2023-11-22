@@ -2,14 +2,13 @@ import { Reporter } from './Reporter';
 import { DatabaseReporter } from './DatabaseReporter';
 import { CurrentStatusReporter } from './CurrentStatusReporter';
 import { LoggerReporter } from './LoggerReporter';
-import { FormatterFactory } from './formatter/FormatterFactory';
-import { Formatter } from './formatter/DefaultFormatter';
-import { ReporterConfig } from '../ConfigProcessor';
+import { KafkaReporter } from './KafkaReporter';
 
 export type ReporterType = { new (config: any, env: any): Reporter };
 const registeredReporters: { [x: string]: ReporterType } = {
   database: DatabaseReporter,
   currentStatus: CurrentStatusReporter,
+  kafka: KafkaReporter,
   logger: LoggerReporter,
 };
 

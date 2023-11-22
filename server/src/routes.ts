@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import * as CurrentConditionsController from './controller/CurrentConditions';
 
 const router = express.Router();

@@ -1,20 +1,21 @@
-import { Reading } from "../reading/Reading";
+import { Reading } from '../reading/Reading';
 
-export class Reporter {
-  async init() : Promise<void>{}
-  
-  shouldReportReading(reading:Reading) {
+export abstract class Reporter {
+  async init(): Promise<void> {}
+
+  shouldReportReading(reading: Reading) {
     return true;
   }
 
-  report(reading:Reading) {
+  report(reading: Reading) {
     if (this.shouldReportReading(reading)) {
       this.reportReading(reading);
     }
   }
 
-  reportReading(reading:Reading) {}
+  abstract getName(): string;
 
-  reportError(error) {}
+  abstract reportReading(reading: Reading): Promise<any>;
+
+  abstract reportError(error): Promise<any>;
 }
-
