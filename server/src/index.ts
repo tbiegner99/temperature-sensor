@@ -1,12 +1,5 @@
-const Application = require('./Application');
-const ConfigProcessor = require('./ConfigProcessor');
+export * from './Application';
+export * from './ConfigProcessor';
 
-const CurrentConditionsRoutes = require('./routes');
-const CurrentConditionsManager = require('./service/CurrentConditionsManager');
-
-export {
-  Application,
-  ConfigProcessor,
-  CurrentConditionsManager,
-  CurrentConditionsRoutes,
-};
+export { default as CurrentConditionsRoutes } from './routes';
+export { default as CurrentConditionsManager } from './service/CurrentConditionsManager';
