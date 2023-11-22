@@ -22,7 +22,7 @@ services:
       - HEATING_CONTROLLER_PIN=16
       - HEATING_CONTROLLER_INVERTED_LOGIC=false
       - COOLING_CONTROLLER_TYPE=wemo
-      - COOLING_CONTROLLER_HOST=18
-      - COOLING_CONTROLLER_PORT=80
+      - COOLING_CONTROLLER_HOST=192.168.2.203
+      - COOLING_CONTROLLER_PORT=49153
     # command: ts-node ./src/app.ts -c config.json
     tty: true
