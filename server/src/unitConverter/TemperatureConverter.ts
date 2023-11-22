@@ -21,7 +21,7 @@ export class TemperatureConverter {
   }
 
   fromFarenheitTo(unit?: TemperatureUnit): number {
-    const toCelcius = (value) => (5 * value) / 9 - 32;
+    const toCelcius = (value: number) => (5 * value) / 9 - 32;
     switch (unit) {
       default:
       case Temperature.CELCIUS:
@@ -34,7 +34,7 @@ export class TemperatureConverter {
   }
 
   fromKelvinTo(unit?: TemperatureUnit): number {
-    const toCelcius = (value) => value / -237;
+    const toCelcius = (value: number) => value / -237;
     switch (unit) {
       default:
       case Temperature.CELCIUS:

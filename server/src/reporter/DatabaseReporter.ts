@@ -19,7 +19,7 @@ export class DatabaseReporter extends Reporter {
   zoneDescription: string;
   lastReported: number | null;
   reportingInterval: number;
-  constructor(config: DatabaseReporterConfig, env) {
+  constructor(config: DatabaseReporterConfig, env: any) {
     super();
     this.isZoneCreated = false;
     this.httpClient = env.httpClient;
@@ -34,7 +34,7 @@ export class DatabaseReporter extends Reporter {
     return 'databaseReporter';
   }
 
-  shouldReportReading(reading) {
+  shouldReportReading(reading: Reading) {
     if (this.isReporterActive()) {
       return reading.type === ReadingTypes.TEMPERATURE || reading.type === ReadingTypes.HUMIDITY;
     }
@@ -56,14 +56,14 @@ export class DatabaseReporter extends Reporter {
     );
   }
 
-  createZone(zoneName) {
+  createZone(zoneName: string) {
     return this.httpClient.post(`${this.reporterHost}/api/sensors/zones`, {
       name: zoneName,
       description: this.zoneDescription,
     });
   }
 
-  createReading(zoneName, type, value) {
+  createReading(zoneName: string, type: string, value: any) {
     return this.httpClient.post(
       `${this.reporterHost}/api/sensors/zones/${zoneName}/readings/${type}`,
       {

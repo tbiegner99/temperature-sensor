@@ -25,7 +25,7 @@ export class KafkaReporter extends Reporter {
   producer: Producer;
   isConnected: boolean;
 
-  constructor(config: KafkaReporterConfig, env) {
+  constructor(config: KafkaReporterConfig, env: any) {
     super();
     this.isConnected = false;
     this.brokers = config.brokers;
@@ -78,7 +78,7 @@ export class KafkaReporter extends Reporter {
     return this.isOutsideOfReportingInterval() && Boolean(this.zoneName);
   }
 
-  async createReading(zoneName, type, value) {
+  async createReading(zoneName: string, type: string, value: any) {
     const timestamp = Date.now();
     console.info(`Sending ${type} reading to Kafka`);
     await this.producer.send({

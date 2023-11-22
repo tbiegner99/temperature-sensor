@@ -39,7 +39,7 @@ export class LoggerReporter extends Reporter {
     return new Formatter().format(reading);
   }
 
-  async reportReading(reading) {
+  async reportReading(reading: Reading) {
     console.log(this.formatReading(reading));
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/temperature-sensor",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "senses temperature and sends to server to save to db",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

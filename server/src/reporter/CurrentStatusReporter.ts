@@ -6,16 +6,16 @@ import { Reading } from '../reading/Reading';
 
 export class CurrentStatusReporter extends Reporter {
   currentStatusManager: CurrentConditionsService;
-  constructor(config: ReporterConfig, env) {
+  constructor(config: ReporterConfig, env: any) {
     super();
     this.currentStatusManager = env.currentStatusManager;
   }
 
-  shouldReportReading(reading) {
-    return reading.name === ReadingTypes.TEMPERATURE || reading.name === ReadingTypes.HUMIDITY;
+  shouldReportReading(reading: Reading) {
+    return reading.type === ReadingTypes.TEMPERATURE || reading.type === ReadingTypes.HUMIDITY;
   }
 
-  async reportError(err) {
+  async reportError(err: Error) {
     this.currentStatusManager.setLastError(err);
   }
 
