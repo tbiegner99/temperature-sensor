@@ -38,6 +38,62 @@ export class ConfigProcessor {
     }
   }
 
+  static loadLoggerReporterFromEnvironment() {
+    if (process.env.ENABLE_LOG_REPORTER !== 'true') {
+      return {};
+    }
+    return {
+      logger: {},
+    };
+  }
+
+  static loadKafkaReporterFromEnvironment() {
+    if (process.env.ENABLE_KAFKA_REPORTER !== 'true') {
+      return {};
+    }
+    const topic = process.env.KAFKA_TOPIC;
+    const zoneName = process.env.ZONE_NAME;
+    const appName = process.env.APP_NAME;
+    const zoneDescription = process.env.ZONE_DESCRIPTION;
+    const brokers = process.env.KAFKA_BROKERS.split(',');
+    const reportingInterval = Number.parseInt(process.env.KAFKA_REPORTING_INTERVAL, 10);
+    if (!topic) {
+      throw new Error('topic required');
+    }
+    if (!zoneName) {
+      throw new Error('zoneName required');
+    }
+    if (!appName) {
+      throw new Error('appName required');
+    }
+    return {
+      kafka: {
+        topic,
+        brokers,
+        zoneName,
+        zoneDescription,
+        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,,
+        appName,
+      },
+    };
+  }
+
+  static async createFromEnvironment(): Promise<ConfigProcessor> {
+    const appPort = Number.parseInt(process.env.APP_PORT, 10);
+    const gpioPin = Number.parseInt(process.env.GPIO, 10);
+    const interval = Number.parseInt(process.env.INTERVAL, 10);
+    return new ConfigProcessor({
+      contextRoot: process.env.APP_ROOT || '/api',
+      gpioPin: !Number.isNaN(gpioPin) ? gpioPin : GpioPins.GPIO4,
+      appPort: !Number.isNaN(appPort) ? appPort : 8080,
+      interval: !Number.isNaN(interval) ? interval : Timing.FIVE_MIN,
+      reporters: {
+        ...ConfigProcessor.loadLoggerReporterFromEnvironment(),
+        ...ConfigProcessor.loadKafkaReporterFromEnvironment(),
+      },
+    });
+  }
+
   static async getReporters(config) {
     const env = {
       ...process.env,

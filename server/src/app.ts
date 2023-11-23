@@ -15,14 +15,19 @@ async function run() {
   ]).bindHelp();
 
   const { options } = getopt.parse(process.argv.slice(2));
-
+  let configProcessor: ConfigProcessor;
   if (!options.config) {
-    console.error('Config file is required. Pass --config');
-    process.exit(1);
+    try {
+      configProcessor = await ConfigProcessor.createFromEnvironment();
+    } catch (err) {
+      console.error('Error loading config from environment');
+      process.exit(1);
+    }
+  } else {
+    configProcessor = await ConfigProcessor.createFromFile(
+      path.resolve(process.cwd(), options.config)
+    );
   }
-  const configProcessor = await ConfigProcessor.createFromFile(
-    path.resolve(process.cwd(), options.config)
-  );
 
   const config = await configProcessor.performInitialization();
 
