@@ -72,7 +72,7 @@ export class ConfigProcessor {
         brokers,
         zoneName,
         zoneDescription,
-        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,,
+        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
         appName,
       },
     };
