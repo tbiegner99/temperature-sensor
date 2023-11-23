@@ -82,7 +82,7 @@ export class ConfigProcessor {
     const appPort = Number.parseInt(process.env.APP_PORT, 10);
     const gpioPin = Number.parseInt(process.env.GPIO, 10);
     const interval = Number.parseInt(process.env.INTERVAL, 10);
-    return new ConfigProcessor({
+    var config = {
       contextRoot: process.env.APP_ROOT || '/api',
       gpioPin: !Number.isNaN(gpioPin) ? gpioPin : GpioPins.GPIO4,
       appPort: !Number.isNaN(appPort) ? appPort : 8080,
@@ -91,7 +91,9 @@ export class ConfigProcessor {
         ...ConfigProcessor.loadLoggerReporterFromEnvironment(),
         ...ConfigProcessor.loadKafkaReporterFromEnvironment(),
       },
-    });
+    };
+    console.log('Loaded config from environment', config);
+    return new ConfigProcessor(config);
   }
 
   static async getReporters(config) {
