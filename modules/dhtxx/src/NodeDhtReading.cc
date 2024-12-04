@@ -8,7 +8,7 @@ NodeDhtReading::NodeDhtReading(Napi::Env env, int gpio, Napi::Promise::Deferred 
 }
 
 NodeDhtReading::~NodeDhtReading(){
-	DHTXXD_cancel(this->dht);
+	free(this->dht);
 }
 
 void NodeDhtReading::Execute() {
@@ -23,11 +23,13 @@ void NodeDhtReading::Execute() {
 		case DHT_TIMEOUT:
 			SetError("Dht timeout. Ensure sensor is connected on gpio "+this->gpio);
 			break;
-		case DHT_GOOD: 
-		return;
+		case DHT_GOOD:
+
+		break;
 		default: SetError("Unknown error");
 		 
 	}
+		DHTXXD_cancel(this->dht);
 }
 
 void NodeDhtReading::OnOK() {
@@ -35,9 +37,10 @@ void NodeDhtReading::OnOK() {
 	resolve.Set("temperature",Napi::Number::New(Env(),dht->_data.temperature));
 	resolve.Set("humidity",Napi::Number::New(Env(),dht->_data.humidity));
 	this->deferred.Resolve(resolve);
+	Napi::AsyncWorker::OnOK();
 }
 
 void NodeDhtReading::OnError(const Napi::Error& err) {
 	this->deferred.Reject(err.Value());
-	DHTXXD_cancel(this->dht);
+	Napi::AsyncWorker::OnError(err);
 }

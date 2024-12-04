@@ -31,6 +31,7 @@ export class ConfigProcessor {
   static async createFromFile(file): Promise<ConfigProcessor> {
     try {
       const config = await import(file); // eslint-disable-line global-require, import/no-dynamic-require
+      console.log('Loaded config from file', config.default);
       return new ConfigProcessor(config);
     } catch (err) {
       console.error(`Error loading config file: ${file}`, err);
@@ -84,9 +85,9 @@ export class ConfigProcessor {
     const interval = Number.parseInt(process.env.INTERVAL, 10);
     var config = {
       contextRoot: process.env.APP_ROOT || '/api',
-      gpioPin: !Number.isNaN(gpioPin) ? gpioPin : GpioPins.GPIO4,
+      gpioPin: !Number.isNaN(gpioPin) ? gpioPin : GpioPins.GPIO2,
       appPort: !Number.isNaN(appPort) ? appPort : 8080,
-      interval: !Number.isNaN(interval) ? interval : Timing.FIVE_MIN,
+      interval: !Number.isNaN(interval) ? interval :15000,
       reporters: {
         ...ConfigProcessor.loadLoggerReporterFromEnvironment(),
         ...ConfigProcessor.loadKafkaReporterFromEnvironment(),

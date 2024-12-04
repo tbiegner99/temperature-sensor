@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/dhtxx",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "module to interact with the dht22 or dht11 hardware",
   "main": "index.js",
   "types": "index.d.ts",
@@ -12,11 +12,12 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.9.3",
-    "node-gyp": "^7.1.0",
+    "node-gyp": "^10.3.1",
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "node-addon-api": "^3.0.0"
+    "bindings": "*",
+    "node-addon-api": "^8.3.0"
   },
   "gypfile": true
 }

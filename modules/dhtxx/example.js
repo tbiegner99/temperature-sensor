@@ -1,11 +1,11 @@
-const dht = require("./build/Release/dht.node");
+const {DHTModule :DHT} = require("./index.js");
 
-const GPIO4 = 4;
+const GPIO4 = 2;
 
 const run = async () => {
-  dht.setup();
+  DHT.setup();
   try {
-    const { temperature, humidity } = await dht.readValue(GPIO4);
+    const { temperature, humidity } = await DHT.readValue(GPIO4);
     console.log({
       humidity: `${humidity}%`,
       celcius: `${temperature}`,
@@ -15,7 +15,7 @@ const run = async () => {
     console.log("Error");
     console.log(err);
   }
-  dht.teardown();
+  DHT.teardown();
 };
 
 run();
