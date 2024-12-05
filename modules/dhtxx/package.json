@@ -6,6 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
+    "build-gyp": "node-gyp rebuild",
     "prepare": "npm run build"
   },
   "author": "TJ Biegner",

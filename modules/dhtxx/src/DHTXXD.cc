@@ -280,7 +280,6 @@ void DHTXXD_cancel(DHTXXD_t *self)
       {
          gpioSetAlertFunc(self->gpio,NULL);
       }
-      free(self);
    }
 }
 int DHTXXD_ready(DHTXXD_t *self)
