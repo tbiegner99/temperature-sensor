@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/temperature-sensor",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "senses temperature and sends to server to save to db",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -15,7 +15,7 @@
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "@tbiegner99/dhtxx": "^2.1.0",
+    "@tbiegner99/dhtxx": "^2.1.1",
     "axios": "^1.6.2",
     "body-parser": "^1.20.2",
     "kafkajs": "^2.2.4",
