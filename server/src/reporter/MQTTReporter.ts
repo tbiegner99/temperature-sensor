@@ -1,0 +1,127 @@
+
+import { ReadingTypes } from '../config/constants';
+import { Reporter } from './Reporter';
+import { ReporterConfig } from '../ConfigProcessor';
+import { Reading } from '../reading/Reading';
+import MQTT from "async-mqtt"
+
+export interface MqttReporterConfig extends ReporterConfig {
+  zoneName?: string;
+  topic?: string;
+  reportingInterval: number;
+  zoneDescription: string;
+  user:string;
+  password:string;
+  broker: string;
+  logLevel?: number;
+  topics: {[x:string]: string} | undefined
+  appName: string;
+}
+
+export class MqttReporter extends Reporter {
+  topic: string;
+  broker: string;
+  user: string;
+  password:string;
+  zoneName: string;
+  zoneDescription: string;
+  lastReported: number;
+  reportingInterval: number;
+  isConnected: boolean;
+  topics: {[x:string]: string} | undefined
+  client: MQTT.AsyncClient
+
+  constructor(config: MqttReporterConfig, env: any) {
+    super();
+    this.isConnected = false;
+    this.broker = config.broker || env.MQTT_BROKER;
+    this.topic = config.topic || env.MQTT_TOPIC;
+    this.topics = config.topics;
+    this.zoneName = config.zoneName || env.ZONE_NAME;
+    this.zoneDescription = config.zoneDescription || env.ZONE_DESCRIPTION;
+    this.lastReported = 0;
+    this.reportingInterval = config.reportingInterval;
+    this.user=config.user || env.MQTT_USER;
+    this.password =config.password || env.MQTT_PASSWORD;
+
+  }
+
+  getName() {
+    return 'kafkaReporter';
+  }
+  async reportError() {}
+
+  async init() {
+    try {
+      this.client =await MQTT.connectAsync(this.broker, {
+        username:this.user,
+        password:this.password
+      })
+      this.isConnected = true;
+      console.log('Connected to MQTT broker');
+    } catch (err) {
+      console.error('Error connecting to MQTT broker');
+      console.error(err.message);
+    }
+  }
+
+  shouldReportReading(reading: Reading) {
+    if (this.isReporterActive()) {
+      return reading.type === ReadingTypes.TEMPERATURE || reading.type === ReadingTypes.HUMIDITY;
+    }
+    return false;
+  }
+
+  isOutsideOfReportingInterval() {
+    return (
+      !this.lastReported ||
+      !this.reportingInterval ||
+      this.reportingInterval <= 0 ||
+      Date.now() - this.lastReported > this.reportingInterval
+    );
+  }
+
+  isReporterActive() {
+    return this.isOutsideOfReportingInterval() && Boolean(this.zoneName);
+  }
+
+  getTopicForType(type:string) :string | undefined {
+    if(!this.topics || !this.topics[type]) {
+      return this.topic || undefined;
+    }
+    return this.topics[type]
+  }
+
+  async createReading(zoneName: string, type: string, value: any) {
+    if (!this.isConnected) {
+      await this.init();
+    }
+    const timestamp = Date.now();
+    const topic = this.getTopicForType(type);
+    if(!topic) {
+      console.debug(`No topic coinfigured so not send reading of type ${type} to MQTT`)
+      return
+    }
+    console.info(`Sending ${type} reading to MQTT topic ${topic}`);
+    
+    
+    await this.client.publish(topic, JSON.stringify({
+            timestamp,
+            zoneName,
+            type,
+            value,
+          }),
+       );
+  }
+
+  async reportReading(reading: Reading) {
+    try {
+      
+      const type = reading.type.toLowerCase();
+      await this.createReading(this.zoneName, type, reading.value);
+      this.lastReported = Date.now();
+    } catch (err) {
+      console.warn('Error saving reading to mqtt', err);
+    }
+  }
+}

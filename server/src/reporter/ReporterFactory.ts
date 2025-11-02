@@ -3,6 +3,7 @@ import { DatabaseReporter } from './DatabaseReporter';
 import { CurrentStatusReporter } from './CurrentStatusReporter';
 import { LoggerReporter } from './LoggerReporter';
 import { KafkaReporter } from './KafkaReporter';
+import { MqttReporter } from './MQTTReporter';
 
 export type ReporterType = { new (config: any, env: any): Reporter };
 const registeredReporters: { [x: string]: ReporterType } = {
@@ -10,6 +11,7 @@ const registeredReporters: { [x: string]: ReporterType } = {
   currentStatus: CurrentStatusReporter,
   kafka: KafkaReporter,
   logger: LoggerReporter,
+  mqtt: MqttReporter
 };
 
 export class ReporterFactory {
