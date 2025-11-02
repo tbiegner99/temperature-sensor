@@ -73,7 +73,7 @@ export class ConfigProcessor {
         }
       })
     
-    if (!topic) {
+    if (!topic && !topics) {
       throw new Error('topic required');
     }
     if (!zoneName) {
