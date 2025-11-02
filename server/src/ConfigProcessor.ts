@@ -39,12 +39,59 @@ export class ConfigProcessor {
     }
   }
 
+
+
   static loadLoggerReporterFromEnvironment() {
     if (process.env.ENABLE_LOG_REPORTER !== 'true') {
       return {};
     }
     return {
       logger: {},
+    };
+  }
+
+    
+  static loadMqttReporterFromEnvironment() {
+    if (process.env.ENABLE_MQTT_REPORTER !== 'true') {
+      return {};
+    }
+    const topic = process.env.MQTT_TOPIC;
+    const zoneName = process.env.ZONE_NAME;
+    const appName = process.env.APP_NAME;
+    const zoneDescription = process.env.ZONE_DESCRIPTION;
+    const brokers = process.env.MQTT_BROKER;
+    const reportingInterval = Number.parseInt(process.env.MQTT_REPORTING_INTERVAL, 10);
+    let topics = undefined
+      Object.entries(process.env).forEach(([key,value])=>{
+        var topicPrefix="MQTT_TOPIC_"
+        if(key && key.startsWith(topicPrefix)) {
+          if(!topics) {
+            topics={}
+          }
+          let topic=key.substring(topicPrefix.length)
+          topics[topic]=value
+        }
+      })
+    
+    if (!topic) {
+      throw new Error('topic required');
+    }
+    if (!zoneName) {
+      throw new Error('zoneName required');
+    }
+    if (!appName) {
+      throw new Error('appName required');
+    }
+    return {
+      mqtt: {
+        topic,
+        topics,
+        brokers,
+        zoneName,
+        zoneDescription,
+        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
+        appName,
+      },
     };
   }
 
@@ -91,6 +138,7 @@ export class ConfigProcessor {
       reporters: {
         ...ConfigProcessor.loadLoggerReporterFromEnvironment(),
         ...ConfigProcessor.loadKafkaReporterFromEnvironment(),
+        ...ConfigProcessor.loadMqttReporterFromEnvironment(),
       },
     };
     console.log('Loaded config from environment', config);
