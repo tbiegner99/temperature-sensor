@@ -74,12 +74,15 @@ export class ConfigProcessor {
       })
     
     if (!topic && !topics) {
+      console.error("topic required")
       throw new Error('topic required');
     }
     if (!zoneName) {
+      console.error("zone required")
       throw new Error('zoneName required');
     }
     if (!appName) {
+      console.error("app required")
       throw new Error('appName required');
     }
     return {
@@ -106,6 +109,7 @@ export class ConfigProcessor {
     const brokers = process.env.KAFKA_BROKERS.split(',');
     const reportingInterval = Number.parseInt(process.env.KAFKA_REPORTING_INTERVAL, 10);
     if (!topic) {
+   
       throw new Error('topic required');
     }
     if (!zoneName) {
