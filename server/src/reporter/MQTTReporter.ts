@@ -36,7 +36,16 @@ export class MqttReporter extends Reporter {
     this.isConnected = false;
     this.broker = config.broker || env.MQTT_BROKER;
     this.topic = config.topic || env.MQTT_TOPIC;
-    this.topics = config.topics;
+    this.topics = config.topics || {};
+    if(!config.topics) {
+      Object.entries(process.env).forEach(([key,value])=>{
+        var topicPrefix="MQTT_TOPIC_"
+        if(key && key.startsWith(topicPrefix)) {
+          let topic=key.substring(topicPrefix.length)
+          this.topics[topic]=value
+        }
+      })
+    }
     this.zoneName = config.zoneName || env.ZONE_NAME;
     this.zoneDescription = config.zoneDescription || env.ZONE_DESCRIPTION;
     this.lastReported = 0;
