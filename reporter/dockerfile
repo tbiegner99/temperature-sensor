@@ -1,0 +1,32 @@
+FROM node:18
+RUN wget https://github.com/joan2937/pigpio/archive/master.zip
+RUN unzip master.zip
+
+WORKDIR /pigpio-master
+RUN make install
+RUN apt-get update
+RUN apt-get install -y vim
+# create gpio permission
+#997 is raspbian gpio group id
+RUN groupadd --gid 997 gpio
+RUN usermod -a -G gpio node
+
+USER root
+WORKDIR /srv/package
+
+
+COPY ./package-lock.json ./
+COPY ./package.json ./
+COPY tsconfig.json tsconfig.json
+COPY ./src ./src
+RUN npm ci
+RUN mkdir -p ./database
+RUN echo -e '{\
+    "margin": 0.6, \n\
+    "heatThreshold": 15,\n\
+    "coolingThreshold": 30\n\
+}' > ./database/settings.json
+RUN npm i -g ts-node
+
+COPY config.json config.json
+CMD rm -rf /var/run/pigpio.pid && ts-node ./src/app.ts -c config.json

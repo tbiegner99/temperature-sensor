@@ -1,7 +1,7 @@
 {
-  "name": "@tbiegner99/temperature-sensor",
+  "name": "@tbiegner99/reporter",
   "version": "2.2.1",
-  "description": "senses temperature and sends to server to save to db",
+  "description": "collects data from govt sites and sends it to reporters",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
@@ -15,23 +15,13 @@
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "@tbiegner99/dhtxx": "^2.1.1",
-    "@tbiegner99/reporter": "file:../reporter",
     "async-mqtt": "^2.6.3",
-    "axios": "^1.6.2",
-    "body-parser": "^1.20.2",
-    "kafkajs": "^2.2.4",
-    "mqtt": "^5.14.1",
-    "node-getopt": "^0.3.2",
-    "rpio": "^2.4.2"
+    "axios": "^1.13.1",
+    "kafkajs": "^2.2.4"
   },
   "files": [
     "/dist"
   ],
-  "peerDependencies": {
-    "axios": "^1.6.2",
-    "express": "^4.17.1"
-  },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.10",

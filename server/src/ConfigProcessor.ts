@@ -1,8 +1,7 @@
 import httpClient from 'axios';
-import currentStatusManager from './service/CurrentConditionsManager';
-import { ReporterFactory } from './reporter/ReporterFactory';
-import { GpioPins, Timing } from './config/constants';
-import { Reporter } from './reporter/Reporter';
+import { GpioPins } from './config/constants';
+import { ReporterConfig, Reporter, Timing, ReporterFactory } from '@tbiegner99/reporter';
+import { CurrentConditions } from './currentConditions/CurrentConditionsManager';
 
 export interface ConfigFile {
   contextRoot: string;
@@ -19,8 +18,6 @@ export interface Config {
   appPort: number;
   reporters: Reporter[];
 }
-
-export interface ReporterConfig {}
 
 export class ConfigProcessor {
   config: Partial<ConfigFile>;
@@ -39,97 +36,6 @@ export class ConfigProcessor {
     }
   }
 
-
-
-  static loadLoggerReporterFromEnvironment() {
-    if (process.env.ENABLE_LOG_REPORTER !== 'true') {
-      return {};
-    }
-    return {
-      logger: {},
-    };
-  }
-
-    
-  static loadMqttReporterFromEnvironment() {
-    if (process.env.ENABLE_MQTT_REPORTER !== 'true') {
-      return {};
-    }
-    const topic = process.env.MQTT_TOPIC;
-    const zoneName = process.env.ZONE_NAME;
-    const appName = process.env.APP_NAME;
-    const zoneDescription = process.env.ZONE_DESCRIPTION;
-    const brokers = process.env.MQTT_BROKER;
-    const reportingInterval = Number.parseInt(process.env.MQTT_REPORTING_INTERVAL, 10);
-    let topics = undefined
-      Object.entries(process.env).forEach(([key,value])=>{
-        var topicPrefix="MQTT_TOPIC_"
-        if(key && key.startsWith(topicPrefix)) {
-          if(!topics) {
-            topics={}
-          }
-          let topic=key.substring(topicPrefix.length)
-          topics[topic]=value
-        }
-      })
-    
-    if (!topic && !topics) {
-      console.error("topic required")
-      throw new Error('topic required');
-    }
-    if (!zoneName) {
-      console.error("zone required")
-      throw new Error('zoneName required');
-    }
-    if (!appName) {
-      console.error("app required")
-      throw new Error('appName required');
-    }
-    return {
-      mqtt: {
-        topic,
-        topics,
-        brokers,
-        zoneName,
-        zoneDescription,
-        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
-        appName,
-      },
-    };
-  }
-
-  static loadKafkaReporterFromEnvironment() {
-    if (process.env.ENABLE_KAFKA_REPORTER !== 'true') {
-      return {};
-    }
-    const topic = process.env.KAFKA_TOPIC;
-    const zoneName = process.env.ZONE_NAME;
-    const appName = process.env.APP_NAME;
-    const zoneDescription = process.env.ZONE_DESCRIPTION;
-    const brokers = process.env.KAFKA_BROKERS.split(',');
-    const reportingInterval = Number.parseInt(process.env.KAFKA_REPORTING_INTERVAL, 10);
-    if (!topic) {
-   
-      throw new Error('topic required');
-    }
-    if (!zoneName) {
-      throw new Error('zoneName required');
-    }
-    if (!appName) {
-      throw new Error('appName required');
-    }
-    return {
-      kafka: {
-        topic,
-        brokers,
-        zoneName,
-        zoneDescription,
-        reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
-        appName,
-      },
-    };
-  }
-
   static async createFromEnvironment(): Promise<ConfigProcessor> {
     const appPort = Number.parseInt(process.env.APP_PORT, 10);
     const gpioPin = Number.parseInt(process.env.GPIO, 10);
@@ -138,12 +44,8 @@ export class ConfigProcessor {
       contextRoot: process.env.APP_ROOT || '/api',
       gpioPin: !Number.isNaN(gpioPin) ? gpioPin : GpioPins.GPIO2,
       appPort: !Number.isNaN(appPort) ? appPort : 8080,
-      interval: !Number.isNaN(interval) ? interval :15000,
-      reporters: {
-        ...ConfigProcessor.loadLoggerReporterFromEnvironment(),
-        ...ConfigProcessor.loadKafkaReporterFromEnvironment(),
-        ...ConfigProcessor.loadMqttReporterFromEnvironment(),
-      },
+      interval: !Number.isNaN(interval) ? interval : 15000,
+      reporters: ReporterConfig.loadFromEnvironment(),
     };
     console.log('Loaded config from environment', config);
     return new ConfigProcessor(config);
@@ -153,7 +55,7 @@ export class ConfigProcessor {
     const env = {
       ...process.env,
       httpClient,
-      currentStatusManager,
+      currentStatusManager: CurrentConditions,
     };
     return await new ReporterFactory(config.reporters, env).constructReporters();
   }

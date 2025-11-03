@@ -1,6 +1,6 @@
 import { Reader } from './Reader';
 
-export class IntervalReader extends Reader {
+export class IntervalReader extends Reader<any> {
   paused: boolean;
   intervalId?: NodeJS.Timeout;
   constructor(

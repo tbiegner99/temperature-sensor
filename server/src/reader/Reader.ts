@@ -1,13 +1,12 @@
-import { Reading } from '../reading/Reading';
-import { Reporter } from '../reporter/Reporter';
+import { Reading, Reporter } from '@tbiegner99/reporter';
 
-export class Reader {
+export class Reader<T> {
   reporters: Reporter[];
   constructor(reporters?: Reporter[]) {
     this.reporters = reporters || [];
   }
 
-  async takeReadings(): Promise<Reading[]> {
+  async takeReadings(): Promise<Reading<T>[]> {
     throw new Error('Not implemented error');
   }
 
@@ -41,7 +40,7 @@ export class Reader {
     if (!Array.isArray(readings)) {
       values = [readings];
     }
-    const reportReadingForReporter = (reporter: Reporter, reading: Reading) => async () => {
+    const reportReadingForReporter = (reporter: Reporter, reading: Reading<T>) => async () => {
       if (reporter.shouldReportReading(reading)) {
         try {
           await reporter.reportReading(reading);
