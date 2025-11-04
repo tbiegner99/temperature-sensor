@@ -211,7 +211,6 @@ async function reportOceanData(oceanConditions: OceanConditions, reporters: Repo
     },
     reporters
   );
-  console.log('Data collection complete.');
 }
 
 async function reportData(reading: Reading<any> | undefined, reporters: Reporter[]) {
@@ -243,3 +242,4 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 setInterval(collectOceanData, parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES)); // every 15 minutes
 setInterval(collectAirQualityData, parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES)); // every 5 minutes
 setInterval(collectWeatherData, parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES)); // every hour
+console.log('Data collection service started.');
