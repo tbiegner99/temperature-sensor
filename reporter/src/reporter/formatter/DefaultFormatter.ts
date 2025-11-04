@@ -6,6 +6,6 @@ export class Formatter {
   }
 
   format(reading: Reading<any>): string {
-    return reading.reading.toDisplayString(2);
+    return `${reading.type}: ${reading.reading.toDisplayString(2)}`;
   }
 }
