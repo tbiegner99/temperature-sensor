@@ -49,6 +49,8 @@ export class ReporterConfig {
         topic,
         topics,
         broker,
+        password: process.env.MQTT_PASSWORD,
+        user: process.env.MQTT_USER,
         zoneName,
         zoneDescription,
         reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
