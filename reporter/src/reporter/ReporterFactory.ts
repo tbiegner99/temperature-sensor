@@ -23,8 +23,8 @@ export class ReporterFactory {
     this.env = env;
   }
 
-  static fromEnvironment(): Promise<Reporter[]> {
-    return new ReporterFactory(ReporterConfig.loadFromEnvironment(), {}).constructReporters();
+  static fromEnvironment(): ReporterFactory {
+    return new ReporterFactory(ReporterConfig.loadFromEnvironment(), {});
   }
 
   async constructReporters(): Promise<Reporter[]> {
