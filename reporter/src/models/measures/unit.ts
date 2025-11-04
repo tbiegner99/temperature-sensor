@@ -5,6 +5,19 @@ export interface Unit<T> {
   toDisplayString(): string;
 }
 
+export const Unitless: Unit<void> = {
+  symbol: null,
+  convertTo(unit: Unit<void>, value: number): number {
+    return value;
+  },
+  toString(): string {
+    return '';
+  },
+  toDisplayString(): string {
+    return '';
+  },
+};
+
 export class Value<T> {
   value: number;
   unit: Unit<T>;
