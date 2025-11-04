@@ -18,7 +18,7 @@ export class ReporterConfig {
     const zoneName = process.env.ZONE_NAME;
     const appName = process.env.APP_NAME;
     const zoneDescription = process.env.ZONE_DESCRIPTION;
-    const brokers = process.env.MQTT_BROKER;
+    const broker = process.env.MQTT_BROKER;
     const reportingInterval = Number.parseInt(process.env.MQTT_REPORTING_INTERVAL, 10);
     let topics = undefined;
     Object.entries(process.env).forEach(([key, value]) => {
@@ -48,7 +48,7 @@ export class ReporterConfig {
       mqtt: {
         topic,
         topics,
-        brokers,
+        broker,
         zoneName,
         zoneDescription,
         reportingInterval: !Number.isNaN(reportingInterval) ? reportingInterval : Timing.FIVE_MIN,
