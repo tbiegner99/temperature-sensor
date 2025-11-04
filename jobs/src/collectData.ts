@@ -1,3 +1,4 @@
+import { read } from 'fs';
 import {
   AirQualityData,
   OceanConditions,
@@ -214,8 +215,8 @@ async function reportOceanData(oceanConditions: OceanConditions, reporters: Repo
 }
 
 async function reportData(reading: Reading<any> | undefined, reporters: Reporter[]) {
-  if (!reading) {
-    console.warn('Skipping empty reading');
+  if (!reading || !reading.reading || isNaN(reading.reading.value)) {
+    console.warn(`Skipping empty reading: ${reading?.type}`);
     return;
   }
   for (const reporter of reporters) {
