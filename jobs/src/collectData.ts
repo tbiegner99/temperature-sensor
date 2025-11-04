@@ -6,17 +6,33 @@ import {
 import { WeatherDatasource } from './domains/weather/WeatherDatasource';
 import { WeatherService } from './domains/weather/WeatherService';
 import { Reading, Reporter, ReporterFactory, Unitless, Value } from '@tbiegner99/reporter';
-async function collectData() {
+async function collectWeatherData() {
   console.log('Collecting data...');
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
   const currentWeather = await service.getCurrentWeather();
+  const reporters = await ReporterFactory.fromEnvironment();
+  await reportWeatherData(currentWeather, reporters);
+  console.log('Weather data collection complete.');
+}
+
+async function collectAirQualityData() {
+  console.log('Collecting air quality data...');
+  const datasource = new WeatherDatasource();
+  const service = new WeatherService(datasource);
   const aqi = await service.getAirQualityIndex('11756', 10);
-  const oceanConditions = await service.getOceanConditions();
   const reporters = await ReporterFactory.fromEnvironment();
   await reportAqiData(aqi, reporters);
-  await reportWeatherData(currentWeather, reporters);
+  console.log('Air quality data collection complete.');
+}
+async function collectOceanData() {
+  console.log('Collecting ocean data...');
+  const datasource = new WeatherDatasource();
+  const service = new WeatherService(datasource);
+  const oceanConditions = await service.getOceanConditions();
+  const reporters = await ReporterFactory.fromEnvironment();
   await reportOceanData(oceanConditions, reporters);
+  console.log('Ocean data collection complete.');
 }
 
 async function reportAqiData(aqi: AirQualityData, reporters: Reporter[]) {
@@ -207,4 +223,22 @@ async function reportData(reading: Reading<any> | undefined, reporters: Reporter
   }
 }
 
-collectData();
+const parseValue = (envVar: string | undefined, defaultValue: number): number => {
+  if (!envVar) {
+    return defaultValue;
+  }
+  const parsed = Number.parseInt(envVar, 10);
+  if (Number.isNaN(parsed)) {
+    return defaultValue;
+  }
+  return parsed;
+};
+
+const FIVE_MINUTES = 5 * 60 * 1000;
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
+
+// Schedule data collection
+
+setInterval(collectOceanData, parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES)); // every 15 minutes
+setInterval(collectAirQualityData, parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES)); // every 5 minutes
+setInterval(collectWeatherData, parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES)); // every hour
