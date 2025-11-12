@@ -81,7 +81,7 @@ export class WeatherDataMapper {
       };
       readings.push(reading);
     }
-    console.log(readings);
+    console.log(JSON.stringify(readings, null, 2));
     return {
       stationId: 44065,
       stationName: 'Breezy Point, NY',
