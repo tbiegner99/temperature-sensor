@@ -38,22 +38,26 @@ async function collectOceanData() {
 }
 
 async function reportAqiData(aqi: AirQualityData, reporters: Reporter[]) {
-  await reportData(
-    {
-      reading: new Value(aqi.o3.aqi, Unitless),
-      timestamp: aqi.o3.observedAt.toDate(),
-      type: 'o3',
-    },
-    reporters
-  );
-  await reportData(
-    {
-      reading: new Value(aqi.pm25.aqi, Unitless),
-      timestamp: aqi.pm25.observedAt.toDate(),
-      type: 'pm25',
-    },
-    reporters
-  );
+  if (aqi.o3) {
+    await reportData(
+      {
+        reading: new Value(aqi.o3.aqi, Unitless),
+        timestamp: aqi.o3.observedAt.toDate(),
+        type: 'o3',
+      },
+      reporters
+    );
+  }
+  if (aqi.pm25) {
+    await reportData(
+      {
+        reading: new Value(aqi.pm25.aqi, Unitless),
+        timestamp: aqi.pm25.observedAt.toDate(),
+        type: 'pm25',
+      },
+      reporters
+    );
+  }
 }
 
 async function reportWeatherData(conditions: WeatherCondition, reporters: Reporter[]) {
