@@ -188,7 +188,7 @@ async function reportOceanData(oceanConditions: OceanConditions, reporters: Repo
     {
       reading: oceanConditions.currentConditions.windDirection,
       timestamp: oceanConditions.currentConditions.timestamp.toDate(),
-      type: 'windDirection',
+      type: 'oceanWindDirection',
     },
     reporters
   );
