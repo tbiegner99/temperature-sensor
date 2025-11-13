@@ -196,7 +196,7 @@ async function reportOceanData(oceanConditions: OceanConditions, reporters: Repo
     {
       reading: oceanConditions.currentConditions.windSpeed,
       timestamp: oceanConditions.currentConditions.timestamp.toDate(),
-      type: 'windSpeed',
+      type: 'oceanWindSpeed',
     },
     reporters
   );
@@ -204,7 +204,7 @@ async function reportOceanData(oceanConditions: OceanConditions, reporters: Repo
     {
       reading: oceanConditions.currentConditions.windGust,
       timestamp: oceanConditions.currentConditions.timestamp.toDate(),
-      type: 'windGust',
+      type: 'oceanWindGust',
     },
     reporters
   );
