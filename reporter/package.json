@@ -1,9 +1,10 @@
 {
   "name": "@tbiegner99/reporter",
-  "version": "2.2.1",
+  "version": "1.0.0",
   "description": "collects data from govt sites and sends it to reporters",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "private": false,
   "scripts": {
     "test": "jest --coverage",
     "test-debug": "jest --watch",
