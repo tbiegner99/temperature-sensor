@@ -54,7 +54,7 @@ export class MqttReporter extends Reporter {
   }
 
   getName() {
-    return 'kafkaReporter';
+    return 'mqttReporter';
   }
   async reportError() {}
 

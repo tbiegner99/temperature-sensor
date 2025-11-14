@@ -10,7 +10,7 @@ import { Reading, Reporter, ReporterFactory, Unitless, Value } from '@tbiegner99
 
 let reporters: Reporter[] = [];
 
-async function collectWeatherData() {
+async function collectWeatherData(reporters: Reporter[]) {
   console.log('Collecting data...');
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
@@ -20,7 +20,7 @@ async function collectWeatherData() {
   console.log('Weather data collection complete.');
 }
 
-async function collectAirQualityData() {
+async function collectAirQualityData(reporters: Reporter[]) {
   console.log('Collecting air quality data...');
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
@@ -28,7 +28,7 @@ async function collectAirQualityData() {
   await reportAqiData(aqi, reporters);
   console.log('Air quality data collection complete.');
 }
-async function collectOceanData() {
+async function collectOceanData(reporters: Reporter[]) {
   console.log('Collecting ocean data...');
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
@@ -246,12 +246,18 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const collect = async () => {
   const factory = ReporterFactory.fromEnvironment();
   reporters = await factory.constructReporters();
-  setInterval(collectOceanData, parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES)); // every 15 minutes
   setInterval(
-    collectAirQualityData,
+    () => collectOceanData(reporters),
+    parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES)
+  ); // every 15 minutes
+  setInterval(
+    () => collectAirQualityData(reporters),
     parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES)
   ); // every 5 minutes
-  setInterval(collectWeatherData, parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES)); // every hour
+  setInterval(
+    () => collectWeatherData(reporters),
+    parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES)
+  ); // every hour
   console.log('Data collection service started.');
   console.log('Reporters:', JSON.stringify(factory.config, null, 2));
 };
