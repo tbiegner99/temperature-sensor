@@ -1,4 +1,5 @@
 import { Reader } from './Reader';
+import { setInterval } from 'node:timers';
 
 export class IntervalReader extends Reader<any> {
   paused: boolean;
