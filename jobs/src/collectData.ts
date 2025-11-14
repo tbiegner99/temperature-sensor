@@ -246,18 +246,16 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const collect = async () => {
   const factory = ReporterFactory.fromEnvironment();
   reporters = await factory.constructReporters();
-  setInterval(
-    () => collectOceanData(reporters),
-    parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES)
-  ); // every 15 minutes
-  setInterval(
-    () => collectAirQualityData(reporters),
-    parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES)
-  ); // every 5 minutes
-  setInterval(
-    () => collectWeatherData(reporters),
-    parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES)
-  ); // every hour
+  var oceanDataInterval = parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES);
+  console.log('Using ocean data interval of', oceanDataInterval, 'ms');
+  setInterval(() => collectOceanData(reporters), oceanDataInterval); // every 15 minutes
+
+  var airQualityDataInterval = parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES);
+  console.log('Using air quality data interval of', airQualityDataInterval, 'ms');
+  setInterval(() => collectAirQualityData(reporters), airQualityDataInterval); // every 5 minutes
+  var weatherDataInterval = parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES);
+  console.log('Using weather data interval of', weatherDataInterval, 'ms');
+  setInterval(() => collectWeatherData(reporters), weatherDataInterval); // every 5 minutes
   console.log('Data collection service started.');
   console.log('Reporters:', JSON.stringify(factory.config, null, 2));
 };
