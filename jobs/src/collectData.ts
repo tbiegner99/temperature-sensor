@@ -1,9 +1,9 @@
-import { read } from 'fs';
 import {
   AirQualityData,
   OceanConditions,
   WeatherCondition,
 } from './domains/weather/models/WeatherCondition';
+import { setInterval } from 'node:timers/promises';
 import { WeatherDatasource } from './domains/weather/WeatherDatasource';
 import { WeatherService } from './domains/weather/WeatherService';
 import { Reading, Reporter, ReporterFactory, Unitless, Value } from '@tbiegner99/reporter';
@@ -248,14 +248,14 @@ const collect = async () => {
   reporters = await factory.constructReporters();
   var oceanDataInterval = parseValue(process.env.OCEAN_DATA_INTERVAL, FIFTEEN_MINUTES);
   console.log('Using ocean data interval of', oceanDataInterval, 'ms');
-  setInterval(() => collectOceanData(reporters), oceanDataInterval); // every 15 minutes
+  setInterval(oceanDataInterval, () => collectOceanData(reporters)); // every 15 minutes
 
   var airQualityDataInterval = parseValue(process.env.AIR_QUALITY_DATA_INTERVAL, FIVE_MINUTES);
   console.log('Using air quality data interval of', airQualityDataInterval, 'ms');
-  setInterval(() => collectAirQualityData(reporters), airQualityDataInterval); // every 5 minutes
+  setInterval(airQualityDataInterval, () => collectAirQualityData(reporters)); // every 5 minutes
   var weatherDataInterval = parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES);
   console.log('Using weather data interval of', weatherDataInterval, 'ms');
-  setInterval(() => collectWeatherData(reporters), weatherDataInterval); // every 5 minutes
+  setInterval(weatherDataInterval, () => collectWeatherData(reporters)); // every 5 minutes
   console.log('Data collection service started.');
   console.log('Reporters:', JSON.stringify(factory.config, null, 2));
 };
