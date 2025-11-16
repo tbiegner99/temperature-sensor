@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-
+import { EventEmitter } from 'events';
 export interface ZoneInfo {
   zoneName: string;
   zoneDescription: string;
@@ -13,6 +13,11 @@ export class CurrentConditionsManager {
   currentHumidity: number;
   _lastUpdate: Date | null;
   _lastError: Error | null;
+  emitter?: EventEmitter;
+
+  setEmitter(emitter?: EventEmitter) {
+    this.emitter = emitter;
+  }
 
   setZoneInfo({ zoneName, zoneDescription }: ZoneInfo) {
     this._zoneName = zoneName;
@@ -24,10 +29,22 @@ export class CurrentConditionsManager {
 
   setCurrentTemperature(temperature) {
     this.currentTemperature = temperature;
+    if (this.emitter) {
+      this.emitter.emit('temperatureUpdate', {
+        zone: this.zoneName,
+        temperature: temperature,
+      });
+    }
   }
 
   setCurrentHumidity(humidity) {
     this.currentHumidity = humidity;
+    if (this.emitter) {
+      this.emitter.emit('humidityUpdate', {
+        zone: this.zoneName,
+        humidity: humidity,
+      });
+    }
   }
 
   setLastUpdate(date) {
