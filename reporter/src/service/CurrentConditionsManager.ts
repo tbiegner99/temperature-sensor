@@ -29,7 +29,9 @@ export class CurrentConditionsManager {
 
   setCurrentTemperature(temperature) {
     this.currentTemperature = temperature;
+    console.log("Emitting temperature change.")
     if (this.emitter) {
+      console.log("Emitting temperature change.")
       this.emitter.emit('temperatureUpdate', {
         zone: this.zoneName,
         temperature: temperature,
@@ -40,6 +42,7 @@ export class CurrentConditionsManager {
   setCurrentHumidity(humidity) {
     this.currentHumidity = humidity;
     if (this.emitter) {
+      console.log("Emitting humidity change")
       this.emitter.emit('humidityUpdate', {
         zone: this.zoneName,
         humidity: humidity,

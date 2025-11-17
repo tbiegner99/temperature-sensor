@@ -51,11 +51,12 @@ export class ConfigProcessor {
     return new ConfigProcessor(config);
   }
 
-  static async getReporters(config) {
+  static async getReporters(config, envVars ={}) {
     const env = {
       ...process.env,
       httpClient,
       currentStatusManager: CurrentConditions,
+      ...envVars
     };
     return await new ReporterFactory(config.reporters, env).constructReporters();
   }
