@@ -6,7 +6,3 @@ export const GpioPins = {
   GPIO4: 4,
 };
 
-export const ReadingTypes = {
-  TEMPERATURE: 'temperature',
-  HUMIDITY: 'humidity',
-};

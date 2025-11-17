@@ -1,5 +1,5 @@
-import { Reading, Temperature, TemperatureUnit, Value } from '@tbiegner99/reporter';
-import { ReadingTypes } from '../config/constants';
+import { Reading, Temperature, TemperatureUnit, Value,ReadingTypes } from '@tbiegner99/reporter';
+
 
 export class TemperatureReading implements Reading<Temperature> {
   readonly type: string;

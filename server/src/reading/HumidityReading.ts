@@ -1,5 +1,4 @@
-import { Percent, PercentUnit, Value, Reading } from '@tbiegner99/reporter';
-import { ReadingTypes } from '../config/constants';
+import { Percent, PercentUnit, Value, Reading,ReadingTypes } from '@tbiegner99/reporter';
 
 export class HumidityReading implements Reading<Percent> {
   readonly type: string;
