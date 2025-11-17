@@ -3,7 +3,6 @@ import { ReadingTypes } from '../constants';
 import { Reporter } from './Reporter';
 import { ReporterConfig } from './ReporterConfig';
 import { Reading, Value } from '../models';
-import { read } from 'fs';
 
 export interface KafkaReporterConfig extends ReporterConfig {
   zoneName?: string;

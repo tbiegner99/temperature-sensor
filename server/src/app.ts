@@ -1,6 +1,6 @@
 import Getopt from 'node-getopt';
 import path from 'path';
-import routes from './routes';
+import {getSensorRoutes} from './routes';
 import { ConfigProcessor } from './ConfigProcessor';
 import { Application } from './Application';
 
@@ -32,7 +32,7 @@ async function run() {
   const config = await configProcessor.performInitialization();
 
   new Application(config)
-    .addRoutes(routes)
+    .addRoutes(getSensorRoutes())
     .start()
     .catch((err) => {
       console.error('Application failed to start', err);

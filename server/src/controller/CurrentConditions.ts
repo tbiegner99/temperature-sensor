@@ -1,20 +1,21 @@
-import { CurrentConditions } from '../currentConditions/CurrentConditionsManager';
-import { PercentUnit, TemperatureUnit } from '@tbiegner99/reporter';
 
-const getCurrentCondition = (req, res) => {
+import {  CurrentConditionsManager, PercentUnit, TemperatureUnit } from '@tbiegner99/reporter';
+
+export const getCurrentConditionRoute = ({conditionsManager}: {conditionsManager: CurrentConditionsManager}) => (req, res) => {
+  
   res.status(200).send({
-    zoneName: CurrentConditions.zoneName,
-    zoneDescription: CurrentConditions.zoneDescription,
-    lastUpdated: CurrentConditions.lastUpdate,
+    zoneName: conditionsManager.zoneName,
+    zoneDescription: conditionsManager.zoneDescription,
+    lastUpdated: conditionsManager.lastUpdate,
     humidity: {
-      value: CurrentConditions.getCurrentHumidity().humidity,
+      value: conditionsManager.getCurrentHumidity().humidity,
       unit: PercentUnit.PERCENT.symbol,
     },
     temperature: {
-      value: CurrentConditions.getCurrentTemperature().temperature,
+      value: conditionsManager.getCurrentTemperature().temperature,
       unit: TemperatureUnit.CELSIUS.symbol,
     },
   });
 };
 
-export { getCurrentCondition };
+

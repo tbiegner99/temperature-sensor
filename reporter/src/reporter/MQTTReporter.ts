@@ -2,7 +2,6 @@ import { Reporter } from './Reporter';
 import { ReporterConfig } from './ReporterConfig';
 import { Reading, Value } from '../models';
 import MQTT from 'async-mqtt';
-import { read } from 'fs';
 
 export interface MqttReporterConfig extends ReporterConfig {
   zoneName?: string;

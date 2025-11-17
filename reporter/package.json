@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/reporter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "collects data from govt sites and sends it to reporters",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.10",
-    "@types/node": "^20.9.4",
+    "@types/node": "^18.19.130",
     "eslint": "^8.54.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
