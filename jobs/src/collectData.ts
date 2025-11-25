@@ -6,7 +6,15 @@ import {
 import { setInterval } from 'node:timers';
 import { WeatherDatasource } from './domains/weather/WeatherDatasource';
 import { WeatherService } from './domains/weather/WeatherService';
-import { Reading, Reporter, ReporterFactory, Unitless, Value } from '@tbiegner99/reporter';
+import {
+  DistanceUnit,
+  Reading,
+  Reporter,
+  ReporterFactory,
+  Unitless,
+  Value,
+} from '@tbiegner99/reporter';
+import dayjs from 'dayjs';
 
 let reporters: Reporter[] = [];
 
@@ -37,6 +45,23 @@ async function collectOceanData(reporters: Reporter[]) {
   console.log('Ocean data collection complete.');
 }
 
+async function collectTideData(reporters: Reporter[]) {
+  console.log('Collecting tide data...');
+  const datasource = new WeatherDatasource();
+  const service = new WeatherService(datasource);
+  const startDate = dayjs().subtract(1, 'day').startOf('day'); // 1 day ago
+  const endDate = dayjs().add(1, 'day').endOf('day'); // 1 day ahead
+  const tideData = await service.getTideData(startDate, endDate);
+  reportData(
+    {
+      reading: new Value(tideData.nextTide?.height.value, DistanceUnit.METER, tideData),
+      timestamp: tideData.nextTide?.timestamp.toDate(),
+      type: 'tides',
+    },
+    reporters
+  );
+  console.log('Tide data collection complete.');
+}
 async function reportAqiData(aqi: AirQualityData, reporters: Reporter[]) {
   if (aqi.o3) {
     await reportData(
@@ -241,6 +266,7 @@ const parseValue = (envVar: string | undefined, defaultValue: number): number =>
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
+const ONE_HOUR = 60 * 60 * 1000;
 
 // Schedule data collection
 const collect = async () => {
@@ -256,7 +282,14 @@ const collect = async () => {
   var weatherDataInterval = parseValue(process.env.WEATHER_DATA_INTERVAL, FIVE_MINUTES);
   console.log('Using weather data interval of', weatherDataInterval, 'ms');
   setInterval(() => collectWeatherData(reporters), weatherDataInterval); // every 5 minutes
+  var tideDataInterval = parseValue(process.env.TIDE_DATA_INTERVAL, ONE_HOUR);
+  console.log('Using tide data interval of', tideDataInterval, 'ms');
+  setInterval(() => collectTideData(reporters), tideDataInterval); // every 1 hour
   console.log('Data collection service started.');
   console.log('Reporters:', JSON.stringify(factory.config, null, 2));
+  collectWeatherData(reporters);
+  collectAirQualityData(reporters);
+  collectOceanData(reporters);
+  collectTideData(reporters);
 };
 collect();

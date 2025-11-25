@@ -89,6 +89,7 @@ export class KafkaReporter extends Reporter {
             timestamp: reading.timestamp,
             zoneName,
             type: reading.type,
+            extraData: reading.reading.extraData,
             unit: reading.reading.unit,
             value: reading.reading.value,
           }),

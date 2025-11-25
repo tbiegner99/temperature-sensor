@@ -21,10 +21,12 @@ export const Unitless: Unit<void> = {
 export class Value<T> {
   value: number;
   unit: Unit<T>;
+  extraData?: any;
 
-  constructor(value: number, unit: Unit<T>) {
+  constructor(value: number, unit: Unit<T>, extraData?: any) {
     this.value = value;
     this.unit = unit;
+    this.extraData = extraData;
   }
 
   static fromString<T>(value: string, unit: Unit<T>): Value<T> | undefined {

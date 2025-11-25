@@ -116,6 +116,7 @@ export class MqttReporter extends Reporter {
         timestamp,
         zoneName,
         type: reading.type,
+        extraData: reading.reading.extraData,
         value: reading.reading.value,
         unit: reading.reading.unit,
       })

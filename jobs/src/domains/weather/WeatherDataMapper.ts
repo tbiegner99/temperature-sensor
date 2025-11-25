@@ -31,16 +31,21 @@ dayjs.extend(utc);
 
 export class WeatherDataMapper {
   toTideData(apiResponse: any): TideData {
+    const tides: Tide[] = apiResponse.predictions.map(
+      (p: any): Tide => ({
+        timestamp: dayjs.utc(p.t, 'YYYY-MM-DD HH:mm'),
+        height: new Value(parseFloat(p.v), DistanceUnit.METER),
+        type: p.type === 'H' ? TideType.High : TideType.Low,
+      })
+    );
+    const nextTide = tides
+      .sort((a, b) => a.timestamp.unix() - b.timestamp.unix())
+      .filter((t) => t.timestamp.isAfter(dayjs.utc()))[0];
     return {
       stationId: 8516385,
       stationName: 'Jones Beach, NY',
-      predictions: apiResponse.predictions.map(
-        (p: any): Tide => ({
-          timestamp: dayjs.utc(p.t, 'YYYY-MM-DD HH:mm'),
-          height: new Value(parseFloat(p.v), DistanceUnit.METER),
-          type: p.type === 'H' ? TideType.High : TideType.Low,
-        })
-      ),
+      predictions: tides,
+      nextTide: nextTide,
     };
   }
 

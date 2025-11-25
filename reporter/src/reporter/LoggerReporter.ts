@@ -44,5 +44,8 @@ export class LoggerReporter extends Reporter {
 
   async reportReading(reading: Reading<any>) {
     console.log(this.formatReading(reading));
+    if (reading.reading.extraData) {
+      console.log('Attributes:', JSON.stringify(reading.reading.extraData));
+    }
   }
 }

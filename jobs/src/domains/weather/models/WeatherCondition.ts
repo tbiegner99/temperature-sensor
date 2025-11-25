@@ -116,4 +116,5 @@ export interface TideData {
   stationId: number;
   stationName: string;
   predictions: Tide[];
+  nextTide?: Tide;
 }

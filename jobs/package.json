@@ -15,7 +15,7 @@
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "@tbiegner99/reporter": "file:../reporter",
+    "@tbiegner99/reporter": "^1.0.4",
     "axios": "^1.6.2",
     "dayjs": "^1.11.19"
   },
