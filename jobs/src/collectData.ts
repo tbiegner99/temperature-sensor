@@ -15,9 +15,10 @@ import {
   Value,
 } from '@tbiegner99/reporter';
 import dayjs from 'dayjs';
+import { clear } from 'node:console';
 
 let reporters: Reporter[] = [];
-
+let tideRetryTimeout: NodeJS.Timeout | null = null;
 async function collectWeatherData(reporters: Reporter[]) {
   console.log('Collecting data...');
   const datasource = new WeatherDatasource();
@@ -36,31 +37,49 @@ async function collectAirQualityData(reporters: Reporter[]) {
   await reportAqiData(aqi, reporters);
   console.log('Air quality data collection complete.');
 }
+
 async function collectOceanData(reporters: Reporter[]) {
   console.log('Collecting ocean data...');
+
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
   const oceanConditions = await service.getOceanConditions();
+
   await reportOceanData(oceanConditions, reporters);
   console.log('Ocean data collection complete.');
 }
 
 async function collectTideData(reporters: Reporter[]) {
+  if (tideRetryTimeout) {
+    clearTimeout(tideRetryTimeout);
+  }
+  tideRetryTimeout = null;
   console.log('Collecting tide data...');
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
   const startDate = dayjs().subtract(1, 'day').startOf('day'); // 1 day ago
   const endDate = dayjs().add(1, 'day').endOf('day'); // 1 day ahead
-  const tideData = await service.getTideData(startDate, endDate);
-  reportData(
-    {
-      reading: new Value(tideData.nextTide?.height.value, DistanceUnit.METER, tideData),
-      timestamp: tideData.nextTide?.timestamp.toDate(),
-      type: 'tides',
-    },
-    reporters
-  );
-  console.log('Tide data collection complete.');
+  try {
+    const tideData = await service.getTideData(startDate, endDate);
+    reportData(
+      {
+        reading: new Value(tideData.nextTide?.height.value, DistanceUnit.METER, tideData),
+        timestamp: tideData.nextTide?.timestamp.toDate(),
+        type: 'tides',
+      },
+      reporters
+    );
+    console.log('Tide data collection complete.');
+  } catch (err) {
+    console.error('Error reporting ocean data: ', err);
+    if (!tideRetryTimeout) {
+      console.log('Retrying in 60 sec');
+      tideRetryTimeout = setTimeout(() => {
+        tideRetryTimeout = null;
+        collectOceanData(reporters);
+      }, 60000);
+    }
+  }
 }
 async function reportAqiData(aqi: AirQualityData, reporters: Reporter[]) {
   if (aqi.o3) {

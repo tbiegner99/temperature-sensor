@@ -64,7 +64,7 @@ export class WeatherDatasource {
     const beginDate = startDate.format('YYYYMMDD');
     const endDateString = endDate.format('YYYYMMDD');
     const response = await this.axiosClient.get(
-      `https://api.tidesandcurrents.noaa.gov/noaa/api/prod/datagetter?begin_date=${beginDate}&end_date=${endDateString}&station=${stationId}&product=predictions&time_zone=gmt&interval=hilo&units=metric&format=json&datum=MLLW`
+      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${beginDate}&end_date=${endDateString}&station=${stationId}&product=predictions&time_zone=gmt&interval=hilo&units=metric&format=json&datum=MLLW`
     );
     return this.mapper.toTideData(response.data);
   }
