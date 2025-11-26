@@ -58,7 +58,7 @@ async function collectTideData(reporters: Reporter[]) {
   const datasource = new WeatherDatasource();
   const service = new WeatherService(datasource);
   const startDate = dayjs().subtract(1, 'day').startOf('day'); // 1 day ago
-  const endDate = dayjs().add(1, 'day').endOf('day'); // 1 day ahead
+  const endDate = dayjs().add(2, 'day').endOf('day'); // 1 day ahead
   try {
     const tideData = await service.getTideData(startDate, endDate);
     reportData(
