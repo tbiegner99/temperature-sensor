@@ -42,11 +42,21 @@ export class WeatherDataMapper {
     const nextTide = tides
       .sort((a, b) => a.timestamp.unix() - b.timestamp.unix())
       .filter((t) => t.timestamp.isAfter(dayjs.utc()))[0];
+    const nextHighTide = tides
+      .filter((t) => t.type === TideType.High)
+      .sort((a, b) => a.timestamp.unix() - b.timestamp.unix())
+      .filter((t) => t.timestamp.isAfter(dayjs.utc()))[0];
+    const nextLowTide = tides
+      .filter((t) => t.type === TideType.Low)
+      .sort((a, b) => a.timestamp.unix() - b.timestamp.unix())
+      .filter((t) => t.timestamp.isAfter(dayjs.utc()))[0];
     return {
       stationId: 8516385,
       stationName: 'Jones Beach, NY',
       predictions: tides,
       nextTide: nextTide,
+      nextHighTide: nextHighTide,
+      nextLowTide: nextLowTide,
     };
   }
 

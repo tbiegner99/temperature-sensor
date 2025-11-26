@@ -118,4 +118,6 @@ export interface TideData {
   stationName: string;
   predictions: Tide[];
   nextTide?: Tide;
+  nextHighTide?: Tide;
+  nextLowTide?: Tide;
 }
