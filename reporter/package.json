@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/reporter",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "collects data from govt sites and sends it to reporters",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -10,6 +10,7 @@
     "test-debug": "jest --watch",
     "lint": "eslint src",
     "precommit": "eslint --fix ./ &&  pretty-quick --staged",
+    "prepublishOnly": "npm run build",
     "build": "tsc"
   },
   "author": "TJ Biegner",
