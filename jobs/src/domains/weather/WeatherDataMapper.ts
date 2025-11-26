@@ -34,7 +34,8 @@ export class WeatherDataMapper {
     const tides: Tide[] = apiResponse.predictions.map(
       (p: any): Tide => ({
         timestamp: dayjs.utc(p.t, 'YYYY-MM-DD HH:mm'),
-        height: new Value(parseFloat(p.v), DistanceUnit.METER),
+        height: parseFloat(p.v),
+        unit: DistanceUnit.METER.symbol,
         type: p.type === 'H' ? TideType.High : TideType.Low,
       })
     );

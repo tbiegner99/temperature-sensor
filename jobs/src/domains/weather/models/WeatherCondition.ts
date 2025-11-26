@@ -109,7 +109,8 @@ export enum TideType {
 export interface Tide {
   timestamp: Dayjs;
   type: TideType;
-  height: Value<Distance>;
+  height: number;
+  unit: string;
 }
 
 export interface TideData {
