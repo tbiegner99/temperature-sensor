@@ -63,16 +63,7 @@ async function collectTideData(reporters: Reporter[]) {
     const tideData = await service.getTideData(startDate, endDate);
     reportData(
       {
-        reading: new Value(tideData.nextTide?.height, DistanceUnit.METER, {
-          ...tideData,
-          nextTideType: tideData.nextTide?.type,
-          nextTideTime: tideData.nextTide?.timestamp,
-          nextTideHeight: tideData.nextTide?.height,
-          nextLowTide: tideData.nextLowTide.timestamp,
-          nextHighTide: tideData.nextHighTide.timestamp,
-          nextLowTideHeight: tideData.nextLowTide.height,
-          nextHighTideHeight: tideData.nextHighTide.height,
-        }),
+        reading: new Value(tideData.nextTide?.height, DistanceUnit.METER, tideData),
         timestamp: tideData.nextTide?.timestamp.toDate(),
         type: 'tides',
       },
