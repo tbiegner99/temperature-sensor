@@ -51,6 +51,7 @@ DHT44 |      |      |      |      |      |
    chksum = (self->_byte[1] + self->_byte[2] +
              self->_byte[3] + self->_byte[4]) & 0xFF;
 
+
    valid = 0;
 
    if (chksum == self->_byte[0])
@@ -75,13 +76,18 @@ DHT44 |      |      |      |      |      |
          valid = 1;
 
          h = ((float)((self->_byte[4]<<8) + self->_byte[3]))/10.0;
-
          if (h > 110.0) valid = 0;
+         int is_temp_negative=self->_byte[2] & 128;
+         if (is_temp_negative) div = -10.0; else div = 10.0;
+         if(is_temp_negative) {
+            //flip bits for two's complement then compute as positive reading
+            self->_byte[2] = (~self->_byte[2]);
+            self->_byte[1] = (~self->_byte[1]);
+         }
+         int16_t signed_value = ((self->_byte[2] & 127) << 8) + self->_byte[1];
 
-         if (self->_byte[2] & 128) div = -10.0; else div = 10.0;
-
-         t = ((float)(((self->_byte[2]&127)<<8) + self->_byte[1])) / div;
-
+         t = ((float)signed_value) / div;
+         
          if ((t < -50.0) || (t > 135.0)) valid = 0;
       }
       else /* AUTO */
@@ -181,7 +187,6 @@ static void _cb(int  event, int level, uint32_t tick, void *user)
             /* invalid bit */
             self->_in_code = 0;
          }
-
          if (self->_in_code)
          {
             if (self->_bits == 40)

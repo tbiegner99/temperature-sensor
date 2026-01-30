@@ -14,6 +14,9 @@ NodeDhtReading::~NodeDhtReading(){
 void NodeDhtReading::Execute() {
 	DHTXXD_manual_read(dht);
 	switch(dht->_data.status) {
+		case DHT_DATA_OUT_OF_RANGE:
+			SetError("Data out of range");
+			break;
 		case DHT_BAD_DATA:
 			SetError("Could not read data");
 			break;

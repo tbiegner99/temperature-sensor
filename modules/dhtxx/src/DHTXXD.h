@@ -23,6 +23,7 @@ Public Domain
 #define DHT_BAD_CHECKSUM 1
 #define DHT_BAD_DATA     2
 #define DHT_TIMEOUT      3
+#define DHT_DATA_OUT_OF_RANGE 4
 
 
 typedef struct
