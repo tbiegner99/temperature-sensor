@@ -15,7 +15,7 @@
   "author": "TJ Biegner",
   "license": "ISC",
   "dependencies": {
-    "@tbiegner99/dhtxx": "^2.1.1",
+    "@tbiegner99/dhtxx": "^2.2.0",
     "@tbiegner99/reporter": "^1.0.3",
     "async-mqtt": "^2.6.3",
     "axios": "^1.6.2",
