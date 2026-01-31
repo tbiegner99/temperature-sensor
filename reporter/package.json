@@ -1,6 +1,6 @@
 {
   "name": "@tbiegner99/reporter",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "collects data from govt sites and sends it to reporters",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

@@ -7,7 +7,7 @@ export class TemperatureReading implements Reading<Temperature> {
   readonly timestamp: Date;
   constructor(value: number) {
     this.timestamp = new Date();
-    this.type = ReadingTypes.TEMPERATURE;
+    this.type = "temperature";
     this.reading = new Value<Temperature>(value, TemperatureUnit.CELSIUS);
   }
 }

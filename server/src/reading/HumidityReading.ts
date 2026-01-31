@@ -6,7 +6,7 @@ export class HumidityReading implements Reading<Percent> {
   readonly timestamp: Date;
   constructor(value: number) {
     this.timestamp = new Date();
-    this.type = ReadingTypes.HUMIDITY;
+    this.type = "humidity";
     this.reading = new Value<Percent>(value, PercentUnit.PERCENT);
   }
 }

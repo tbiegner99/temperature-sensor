@@ -3,6 +3,6 @@ export const Timing = {
   FIVE_MIN: 60000 * 5,
 };
 export const ReadingTypes = {
-  TEMPERATURE: 'Temperature',
-  HUMIDITY: 'Humidity',
+  TEMPERATURE: 'temperature',
+  HUMIDITY: 'humidity',
 };
